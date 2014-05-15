@@ -1,0 +1,9 @@
+*.svn
+/Gallery/bin
+/Gallery/gen
+/Gallery/.settings
+/Gallery2/bin
+/Gallery2/gen
+/Gallery2/.settings
+
+
