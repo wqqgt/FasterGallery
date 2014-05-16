@@ -1100,4 +1100,13 @@ CHAR LIMIT = NONE] -->
         <item quantity="one">%1$d photo</item>
         <item quantity="other">%1$d photos</item>
     </plurals>
+    <!-- String album action bar default title -->
+    <string name="select_album_style">select style</string>
+    
+    <!-- String album action bar popmenu value1 -->
+    <string name="select_album_style_one">Grid</string>
+    <!-- String album action bar popmenu value2 -->
+    <string name="select_album_style_two">Cascading</string>
+    <!-- String album action bar popmenu value3 -->
+    <string name="select_album_style_three">List</string>
 </resources>

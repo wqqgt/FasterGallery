@@ -330,6 +330,7 @@ public class AlbumSetPage extends ActivityState implements
 	@Override
 	public void onCreate(Bundle data, Bundle restoreState) {
 		super.onCreate(data, restoreState);
+		//TODO add new Views in initialize
 		initializeViews();
 		initializeData(data);
 		Context context = mActivity.getAndroidContext();
@@ -510,6 +511,8 @@ public class AlbumSetPage extends ActivityState implements
 
 		mConfig = Config.AlbumSetPage.get(mActivity);
 		mSlotView = new SlotView(mActivity, mConfig.slotViewSpec);
+		
+		//TODO  switch view by mSelectType
 		mAlbumSetView = new AlbumSetSlotRenderer(mActivity, mSelectionManager,
 				mSlotView, mConfig.labelSpec, mConfig.placeholderColor);
 		mSlotView.setSlotRenderer(mAlbumSetView);

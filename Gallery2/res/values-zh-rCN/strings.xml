@@ -436,4 +436,8 @@
     <item quantity="one" msgid="6949174783125614798">"%1$d张照片"</item>
     <item quantity="other" msgid="3813306834113858135">"%1$d张照片"</item>
   </plurals>
+    <string name="select_album_style">样式</string>
+    <string name="select_album_style_one">网格</string>
+    <string name="select_album_style_two">层叠</string>
+    <string name="select_album_style_three">列表</string>
 </resources>

@@ -63,6 +63,8 @@ public class FilterUtils {
 	public static final int CLUSTER_BY_TAG = 8;
 	public static final int CLUSTER_BY_SIZE = 16;
 	public static final int CLUSTER_BY_FACE = 32;
+	public static final int CLUSTER_BY_CASCADING = 64;
+	public static final int CLUSTER_BY_LIST = 128;
 
 	public static final int FILTER_IMAGE_ONLY = 1;
 	public static final int FILTER_VIDEO_ONLY = 2;
