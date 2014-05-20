@@ -19,6 +19,7 @@ package com.android.gallery3d.app;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -54,6 +55,7 @@ import com.android.gallery3d.ui.GLRoot;
 import com.android.gallery3d.ui.GLView;
 import com.android.gallery3d.ui.SelectionManager;
 import com.android.gallery3d.ui.SlotView;
+import com.android.gallery3d.ui.SlotView.Spec;
 import com.android.gallery3d.ui.SynchronizedHandler;
 import com.android.gallery3d.util.Future;
 import com.android.gallery3d.util.GalleryUtils;
@@ -480,11 +482,7 @@ public class AlbumSetPage extends ActivityState implements
 
 	@Override
 	public void onResume() {
-		if (mSelectedAction == FilterUtils.CLUSTER_BY_LIST) {
-			SlotView.WIDE = false;
-		} else {
-			SlotView.WIDE = true;
-		}
+		reConfigSpec(mConfig.slotViewSpec);
 		super.onResume();
 		mIsActive = true;
 		setContentPane(mRootPane);
@@ -519,8 +517,9 @@ public class AlbumSetPage extends ActivityState implements
 	private void initializeViews() {
 		mSelectionManager = new SelectionManager(mActivity, true);
 		mSelectionManager.setSelectionListener(this);
-
+		
 		mConfig = Config.AlbumSetPage.get(mActivity);
+		reConfigSpec(mConfig.slotViewSpec);
 		mSlotView = new SlotView(mActivity, mConfig.slotViewSpec);
 		
 		//TODO  switch view by mSelectType
@@ -557,6 +556,19 @@ public class AlbumSetPage extends ActivityState implements
 			}
 		});
 		mRootPane.addComponent(mSlotView);
+	}
+
+	private void reConfigSpec(Spec slotViewSpec) {
+		Resources r = mActivity.getResources();
+		if (mSelectedAction == FilterUtils.CLUSTER_BY_LIST) {
+			slotViewSpec.rowsLand = r.getInteger(R.integer.albumset_list_rows_land);
+			slotViewSpec.rowsPort = r.getInteger(R.integer.albumset_list_rows_port);
+			SlotView.WIDE = false;
+		} else {
+			slotViewSpec.rowsLand = r.getInteger(R.integer.albumset_rows_land);
+			slotViewSpec.rowsPort = r.getInteger(R.integer.albumset_rows_port);
+			SlotView.WIDE = true;
+		}
 	}
 
 	@Override
