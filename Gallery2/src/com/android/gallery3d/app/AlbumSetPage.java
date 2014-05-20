@@ -354,6 +354,7 @@ public class AlbumSetPage extends ActivityState implements
 			public void handleMessage(Message message) {
 				switch (message.what) {
 				case MSG_PICK_ALBUM: {
+					SlotView.WIDE = true;
 					pickAlbum(message.arg1);
 					break;
 				}
@@ -479,6 +480,11 @@ public class AlbumSetPage extends ActivityState implements
 
 	@Override
 	public void onResume() {
+		if (mSelectedAction == FilterUtils.CLUSTER_BY_LIST) {
+			SlotView.WIDE = false;
+		} else {
+			SlotView.WIDE = true;
+		}
 		super.onResume();
 		mIsActive = true;
 		setContentPane(mRootPane);

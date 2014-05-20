@@ -133,7 +133,12 @@ public class AlbumSetSlotRenderer extends AbstractSlotRenderer {
 		int renderRequestFlags = 0;
 		renderRequestFlags |= renderContent(canvas, entry, width, height);
 		renderRequestFlags |= renderLabel(canvas, entry, width, height);
+		
+		if(!SlotView.WIDE) {
+			renderRequestFlags |= renderPathLabel(canvas, entry, width, height);	
+		}
 		renderRequestFlags |= renderOverlay(canvas, index, entry, width, height);
+
 		return renderRequestFlags;
 	}
 
@@ -197,11 +202,27 @@ public class AlbumSetSlotRenderer extends AbstractSlotRenderer {
 		}
 		int b = AlbumLabelMaker.getBorderSize();
 		int h = mLabelSpec.labelBackgroundHeight;
-		content.draw(canvas, -b, height - h + b, width + b + b, h);
+		if (SlotView.WIDE) {
+			content.draw(canvas, -b, height - h + b, width + b + b, h);
+		} else {
+			content.draw(canvas, height, b, width-height, h);	
+		}
 
 		return 0;
 	}
 
+	protected int renderPathLabel(GLCanvas canvas, AlbumSetEntry entry, int width,
+			int height) {
+		Texture content = checkLabelTexture(entry.labelPathTexture);
+		if (content == null) {
+			content = mWaitLoadingTexture;
+		}
+		int b = AlbumLabelMaker.getBorderSize();
+		int h = mLabelSpec.labelBackgroundHeight;
+		content.draw(canvas, height, height - h + b, width-height, h);
+		return 0;
+	}
+	
 	@Override
 	public void prepareDrawing() {
 		mInSelectionMode = mSelectionManager.inSelectionMode();
