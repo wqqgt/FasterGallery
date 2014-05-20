@@ -31,7 +31,7 @@ public class SlotView extends GLView {
 	@SuppressWarnings("unused")
 	private static final String TAG = "SlotView";
 
-	private static final boolean WIDE = true;
+	public static boolean WIDE = true;
 	private static final int INDEX_NONE = -1;
 
 	public static final int RENDER_MORE_PASS = 1;

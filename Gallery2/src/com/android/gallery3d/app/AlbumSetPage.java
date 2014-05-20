@@ -331,6 +331,13 @@ public class AlbumSetPage extends ActivityState implements
 	public void onCreate(Bundle data, Bundle restoreState) {
 		super.onCreate(data, restoreState);
 		//TODO add new Views in initialize
+		mSelectedAction = data.getInt(AlbumSetPage.KEY_SELECTED_CLUSTER_TYPE,
+				FilterUtils.CLUSTER_BY_ALBUM);
+		if (mSelectedAction == FilterUtils.CLUSTER_BY_LIST) {
+			SlotView.WIDE = false;
+		} else {
+			SlotView.WIDE = true;
+		}
 		initializeViews();
 		initializeData(data);
 		Context context = mActivity.getAndroidContext();
@@ -341,8 +348,6 @@ public class AlbumSetPage extends ActivityState implements
 		mEyePosition = new EyePosition(context, this);
 		mDetailsSource = new MyDetailsSource();
 		mActionBar = mActivity.getGalleryActionBar();
-		mSelectedAction = data.getInt(AlbumSetPage.KEY_SELECTED_CLUSTER_TYPE,
-				FilterUtils.CLUSTER_BY_ALBUM);
 
 		mHandler = new SynchronizedHandler(mActivity.getGLRoot()) {
 			@Override
