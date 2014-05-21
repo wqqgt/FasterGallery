@@ -269,6 +269,12 @@ public class SlotView extends GLView {
 		if (mRenderer == null)
 			return;
 		mRenderer.prepareDrawing();
+		
+		if (WIDE) {
+			mScrollY = 0;
+		} else {
+			mScrollX = 0;
+		}
 
 		long animTime = AnimationTime.get();
 		boolean more = mScroller.advanceAnimation(animTime);
