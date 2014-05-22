@@ -155,7 +155,7 @@ public abstract class MediaSet extends MediaObject {
 	}
 
 	public abstract String getName();
-
+	
 	private WeakHashMap<ContentListener, Object> mListeners = new WeakHashMap<ContentListener, Object>();
 
 	// NOTE: The MediaSet only keeps a weak reference to the listener. The

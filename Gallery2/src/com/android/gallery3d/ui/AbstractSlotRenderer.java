@@ -26,7 +26,7 @@ import com.android.gallery3d.glrenderer.NinePatchTexture;
 import com.android.gallery3d.glrenderer.ResourceTexture;
 import com.android.gallery3d.glrenderer.Texture;
 
-public abstract class AbstractSlotRenderer implements SlotView.SlotRenderer {
+public abstract class AbstractSlotRenderer implements SlotRenderer {
 
 	private final ResourceTexture mVideoOverlay;
 	private final ResourceTexture mVideoPlayIcon;

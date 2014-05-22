@@ -24,14 +24,14 @@ import android.view.animation.DecelerateInterpolator;
 
 import com.android.gallery3d.anim.Animation;
 import com.android.gallery3d.app.AbstractGalleryActivity;
+import com.android.gallery3d.app.FilterUtils;
 import com.android.gallery3d.common.Utils;
 import com.android.gallery3d.glrenderer.GLCanvas;
 
-public class SlotView extends GLView {
+public class AlbumSetTypeSlotView extends GLView {
 	@SuppressWarnings("unused")
 	private static final String TAG = "SlotView";
 
-	public static boolean WIDE = true;
 	private static final int INDEX_NONE = -1;
 
 	public static final int RENDER_MORE_PASS = 1;
@@ -89,6 +89,7 @@ public class SlotView extends GLView {
 	private final Handler mHandler;
 
 	private SlotRenderer mRenderer;
+	private int mViewType;
 
 	private int[] mRequestRenderSlots = new int[16];
 
@@ -99,11 +100,12 @@ public class SlotView extends GLView {
 	// to prevent allocating memory
 	private final Rect mTempRect = new Rect();
 
-	public SlotView(AbstractGalleryActivity activity, Spec spec) {
+	public AlbumSetTypeSlotView(AbstractGalleryActivity activity, Spec spec) {
 		mGestureDetector = new GestureDetector(activity,
 				new MyGestureListener());
 		mScroller = new ScrollerHelper(activity);
 		mHandler = new SynchronizedHandler(activity.getGLRoot());
+		mViewType = AlbumSetTypeManager.get().getCurrentType();
 		setSlotSpec(spec);
 	}
 
@@ -122,18 +124,17 @@ public class SlotView extends GLView {
 			return;
 		}
 		Rect rect = mLayout.getSlotRect(index, mTempRect);
-		int position = WIDE ? (rect.left + rect.right - getWidth()) / 2
-				: (rect.top + rect.bottom - getHeight()) / 2;
+		int position = (rect.top + rect.bottom - getHeight()) / 2;
 		setScrollPosition(position);
 	}
 
 	public void makeSlotVisible(int index) {
 		Rect rect = mLayout.getSlotRect(index, mTempRect);
-		int visibleBegin = WIDE ? mScrollX : mScrollY;
-		int visibleLength = WIDE ? getWidth() : getHeight();
+		int visibleBegin = mScrollY;
+		int visibleLength = getHeight();
 		int visibleEnd = visibleBegin + visibleLength;
-		int slotBegin = WIDE ? rect.left : rect.top;
-		int slotEnd = WIDE ? rect.right : rect.bottom;
+		int slotBegin = rect.top;
+		int slotEnd = rect.bottom;
 
 		int position = visibleBegin;
 		if (visibleLength < slotEnd - slotBegin) {
@@ -193,13 +194,10 @@ public class SlotView extends GLView {
 	}
 
 	private void updateScrollPosition(int position, boolean force) {
-		if (!force && (WIDE ? position == mScrollX : position == mScrollY))
+		if (!force && position == mScrollY)
 			return;
-		if (WIDE) {
-			mScrollX = position;
-		} else {
-			mScrollY = position;
-		}
+		
+		mScrollY = position;
 		mLayout.setScrollPosition(position);
 		onScrollPositionChanged(position);
 	}
@@ -259,11 +257,8 @@ public class SlotView extends GLView {
 			return;
 		mRenderer.prepareDrawing();
 		
-		if (WIDE) {
-			mScrollY = 0;
-		} else {
-			mScrollX = 0;
-		}
+		//TODO it add by wqqgt
+		mScrollX = 0;
 
 		long animTime = AnimationTime.get();
 		boolean more = mScroller.advanceAnimation(animTime);
@@ -463,13 +458,9 @@ public class SlotView extends GLView {
 
 		public Rect getSlotRect(int index, Rect rect) {
 			int col, row;
-			if (WIDE) {
-				col = index / mUnitCount;
-				row = index - col * mUnitCount;
-			} else {
-				row = index / mUnitCount;
-				col = index - row * mUnitCount;
-			}
+			
+			row = index / mUnitCount;
+			col = index - row * mUnitCount;
 
 			int x = mHorizontalPadding.get() + col * (mSlotWidth + mSlotGap);
 			int y = mVerticalPadding.get() + row * (mSlotHeight + mSlotGap);
@@ -537,15 +528,8 @@ public class SlotView extends GLView {
 			} else {
 				int rows = (mWidth > mHeight) ? mSpec.rowsLand : mSpec.rowsPort;
 				mSlotGap = mSpec.slotGap;
-				if (WIDE) {
-					mSlotHeight = Math.max(1, (mHeight - (rows - 1) * mSlotGap)
-							/ rows);
-					mSlotWidth = mSlotHeight - mSpec.slotHeightAdditional;
-				} else {
-					mSlotHeight = Math.max(1, (mHeight - (rows - 1) * mSlotGap)
-							/ rows);
-					mSlotWidth = mWidth;
-				}
+				mSlotHeight = Math.max(1, (mHeight - (rows - 1) * mSlotGap)/ rows);
+				mSlotWidth = calculateWidth(mViewType);
 			}
 
 			if (mRenderer != null) {
@@ -553,17 +537,10 @@ public class SlotView extends GLView {
 			}
 
 			int[] padding = new int[2];
-			if (WIDE) {
-				initLayoutParameters(mWidth, mHeight, mSlotWidth, mSlotHeight,
-						padding);
-				mVerticalPadding.startAnimateTo(padding[0]);
-				mHorizontalPadding.startAnimateTo(padding[1]);
-			} else {
-				initLayoutParameters(mHeight, mWidth, mSlotHeight, mSlotWidth,
-						padding);
-				mVerticalPadding.startAnimateTo(padding[1]);
-				mHorizontalPadding.startAnimateTo(padding[0]);
-			}
+			initLayoutParameters(mHeight, mWidth, mSlotHeight, mSlotWidth,
+					padding);
+			mVerticalPadding.startAnimateTo(padding[1]);
+			mHorizontalPadding.startAnimateTo(padding[0]);
 			updateVisibleSlotRange();
 		}
 
@@ -572,25 +549,31 @@ public class SlotView extends GLView {
 			mHeight = height;
 			initLayoutParameters();
 		}
+		
+		private int calculateWidth(int type) {
+			int width = 0;
+			switch(type) {
+			case FilterUtils.CLUSTER_BY_ALBUM:
+				width = mSlotHeight - mSpec.slotHeightAdditional;
+				break;
+			case FilterUtils.CLUSTER_BY_CASCADING:
+				width = mSlotHeight - mSpec.slotHeightAdditional;
+				break;
+			case FilterUtils.CLUSTER_BY_LIST:
+				width = mWidth;
+				break;
+			}
+			return width;
+		}
 
 		private void updateVisibleSlotRange() {
 			int position = mScrollPosition;
-
-			if (WIDE) {
-				int startCol = position / (mSlotWidth + mSlotGap);
-				int start = Math.max(0, mUnitCount * startCol);
-				int endCol = (position + mWidth + mSlotWidth + mSlotGap - 1)
-						/ (mSlotWidth + mSlotGap);
-				int end = Math.min(mSlotCount, mUnitCount * endCol);
-				setVisibleRange(start, end);
-			} else {
-				int startRow = position / (mSlotHeight + mSlotGap);
-				int start = Math.max(0, mUnitCount * startRow);
-				int endRow = (position + mHeight + mSlotHeight + mSlotGap - 1)
-						/ (mSlotHeight + mSlotGap);
-				int end = Math.min(mSlotCount, mUnitCount * endRow);
-				setVisibleRange(start, end);
-			}
+			int startRow = position / (mSlotHeight + mSlotGap);
+			int start = Math.max(0, mUnitCount * startRow);
+			int endRow = (position + mHeight + mSlotHeight + mSlotGap - 1)
+					/ (mSlotHeight + mSlotGap);
+			int end = Math.min(mSlotCount, mUnitCount * endRow);
+			setVisibleRange(start, end);
 		}
 
 		public void setScrollPosition(int position) {
@@ -623,8 +606,8 @@ public class SlotView extends GLView {
 		}
 
 		public int getSlotIndexByPosition(float x, float y) {
-			int absoluteX = Math.round(x) + (WIDE ? mScrollPosition : 0);
-			int absoluteY = Math.round(y) + (WIDE ? 0 : mScrollPosition);
+			int absoluteX = Math.round(x) + 0;
+			int absoluteY = Math.round(y) + mScrollPosition;
 
 			absoluteX -= mHorizontalPadding.get();
 			absoluteY -= mVerticalPadding.get();
@@ -636,13 +619,10 @@ public class SlotView extends GLView {
 			int columnIdx = absoluteX / (mSlotWidth + mSlotGap);
 			int rowIdx = absoluteY / (mSlotHeight + mSlotGap);
 
-			if (!WIDE && columnIdx >= mUnitCount) {
+			if (columnIdx >= mUnitCount) {
 				return INDEX_NONE;
 			}
 
-			if (WIDE && rowIdx >= mUnitCount) {
-				return INDEX_NONE;
-			}
 
 			if (absoluteX % (mSlotWidth + mSlotGap) >= mSlotWidth) {
 				return INDEX_NONE;
@@ -652,15 +632,13 @@ public class SlotView extends GLView {
 				return INDEX_NONE;
 			}
 
-			int index = WIDE ? (columnIdx * mUnitCount + rowIdx) : (rowIdx
-					* mUnitCount + columnIdx);
+			int index = (rowIdx * mUnitCount + columnIdx);
 
 			return index >= mSlotCount ? INDEX_NONE : index;
 		}
 
 		public int getScrollLimit() {
-			int limit = WIDE ? mContentLength - mWidth : mContentLength
-					- mHeight;
+			int limit = mContentLength - mHeight;
 			return limit <= 0 ? 0 : limit;
 		}
 
@@ -713,7 +691,7 @@ public class SlotView extends GLView {
 			int scrollLimit = mLayout.getScrollLimit();
 			if (scrollLimit == 0)
 				return false;
-			float velocity = WIDE ? velocityX : velocityY;
+			float velocity = velocityY;
 			mScroller.fling((int) -velocity, 0, scrollLimit);
 			if (mUIListener != null)
 				mUIListener.onUserInteractionBegin();
@@ -725,7 +703,7 @@ public class SlotView extends GLView {
 		public boolean onScroll(MotionEvent e1, MotionEvent e2,
 				float distanceX, float distanceY) {
 			cancelDown(false);
-			float distance = WIDE ? distanceX : distanceY;
+			float distance = distanceY;
 			int overDistance = mScroller.startScroll(Math.round(distance), 0,
 					mLayout.getScrollLimit());
 			if (mOverscrollEffect == OVERSCROLL_3D && overDistance != 0) {
@@ -776,7 +754,7 @@ public class SlotView extends GLView {
 			mStartIndex = INDEX_NONE;
 		}
 		// Reset the scroll position to avoid scrolling over the updated limit.
-		setScrollPosition(WIDE ? mScrollX : mScrollY);
+		setScrollPosition(mScrollY);
 		return changed;
 	}
 

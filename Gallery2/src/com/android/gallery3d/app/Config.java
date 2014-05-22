@@ -21,6 +21,8 @@ import android.content.res.Resources;
 
 import com.android.gallery3d.R;
 import com.android.gallery3d.ui.AlbumSetSlotRenderer;
+import com.android.gallery3d.ui.AlbumSetTypeSlotRenderer;
+import com.android.gallery3d.ui.AlbumSetTypeSlotView;
 import com.android.gallery3d.ui.SlotView;
 
 final class Config {
@@ -28,7 +30,9 @@ final class Config {
 		private static AlbumSetPage sInstance;
 
 		public SlotView.Spec slotViewSpec;
+		public AlbumSetTypeSlotView.Spec slotListViewSpec;
 		public AlbumSetSlotRenderer.LabelSpec labelSpec;
+		public AlbumSetTypeSlotRenderer.LabelSpec labelTypeSpec;
 		public int paddingTop;
 		public int paddingBottom;
 		public int placeholderColor;
@@ -77,6 +81,36 @@ final class Config {
 					.getColor(R.color.albumset_label_background);
 			labelSpec.titleColor = r.getColor(R.color.albumset_label_title);
 			labelSpec.countColor = r.getColor(R.color.albumset_label_count);
+			
+			slotListViewSpec = 	new AlbumSetTypeSlotView.Spec();
+			slotListViewSpec.rowsLand = r.getInteger(R.integer.albumset_rows_land);
+			slotListViewSpec.rowsPort = r.getInteger(R.integer.albumset_rows_port);
+			slotListViewSpec.slotGap = r
+					.getDimensionPixelSize(R.dimen.albumset_slot_gap);
+			slotListViewSpec.slotHeightAdditional = 0;
+			
+			labelTypeSpec = new AlbumSetTypeSlotRenderer.LabelSpec();
+			labelTypeSpec.labelBackgroundHeight = r
+					.getDimensionPixelSize(R.dimen.albumset_label_background_height);
+			labelTypeSpec.titleOffset = r
+					.getDimensionPixelSize(R.dimen.albumset_title_offset);
+			labelTypeSpec.countOffset = r
+					.getDimensionPixelSize(R.dimen.albumset_count_offset);
+			labelTypeSpec.titleFontSize = r
+					.getDimensionPixelSize(R.dimen.albumset_title_font_size);
+			labelTypeSpec.countFontSize = r
+					.getDimensionPixelSize(R.dimen.albumset_count_font_size);
+			labelTypeSpec.leftMargin = r
+					.getDimensionPixelSize(R.dimen.albumset_left_margin);
+			labelTypeSpec.titleRightMargin = r
+					.getDimensionPixelSize(R.dimen.albumset_title_right_margin);
+			labelTypeSpec.iconSize = r
+					.getDimensionPixelSize(R.dimen.albumset_icon_size);
+			labelTypeSpec.backgroundColor = r
+					.getColor(R.color.albumset_label_background);
+			labelTypeSpec.titleColor = r.getColor(R.color.albumset_label_title);
+			labelTypeSpec.countColor = r.getColor(R.color.albumset_label_count);
+
 		}
 	}
 

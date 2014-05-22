@@ -49,11 +49,14 @@ import com.android.gallery3d.settings.GallerySettings;
 import com.android.gallery3d.ui.ActionModeHandler;
 import com.android.gallery3d.ui.ActionModeHandler.ActionModeListener;
 import com.android.gallery3d.ui.AlbumSetSlotRenderer;
+import com.android.gallery3d.ui.AlbumSetTypeManager;
+import com.android.gallery3d.ui.AlbumSetTypeSlotRenderer;
 import com.android.gallery3d.ui.DetailsHelper;
 import com.android.gallery3d.ui.DetailsHelper.CloseListener;
 import com.android.gallery3d.ui.GLRoot;
 import com.android.gallery3d.ui.GLView;
 import com.android.gallery3d.ui.SelectionManager;
+import com.android.gallery3d.ui.AlbumSetTypeSlotView;
 import com.android.gallery3d.ui.SlotView;
 import com.android.gallery3d.ui.SlotView.Spec;
 import com.android.gallery3d.ui.SynchronizedHandler;
@@ -84,8 +87,9 @@ public class AlbumSetPage extends ActivityState implements
 	private static final int BIT_LOADING_SYNC = 2;
 
 	private boolean mIsActive = false;
-	private SlotView mSlotView;
-	private AlbumSetSlotRenderer mAlbumSetView;
+	private AlbumSetTypeSlotView mSlotView;
+	private AlbumSetTypeSlotRenderer mAlbumSetView;
+	private AlbumSetTypeManager mTypeManager;
 	private Config.AlbumSetPage mConfig;
 
 	private MediaSet mMediaSet;
@@ -518,15 +522,17 @@ public class AlbumSetPage extends ActivityState implements
 		mSelectionManager = new SelectionManager(mActivity, true);
 		mSelectionManager.setSelectionListener(this);
 		
+		mTypeManager = AlbumSetTypeManager.get();
+		mTypeManager.setCurrentType(mSelectedAction);
 		mConfig = Config.AlbumSetPage.get(mActivity);
 		reConfigSpec(mConfig.slotViewSpec);
-		mSlotView = new SlotView(mActivity, mConfig.slotViewSpec);
+		mSlotView = new AlbumSetTypeSlotView(mActivity, mConfig.slotListViewSpec);
 		
 		//TODO  switch view by mSelectType
-		mAlbumSetView = new AlbumSetSlotRenderer(mActivity, mSelectionManager,
-				mSlotView, mConfig.labelSpec, mConfig.placeholderColor);
+		mAlbumSetView = new AlbumSetTypeSlotRenderer(mActivity, mSelectionManager,
+				mSlotView, mConfig.labelTypeSpec, mConfig.placeholderColor);
 		mSlotView.setSlotRenderer(mAlbumSetView);
-		mSlotView.setListener(new SlotView.SimpleListener() {
+		mSlotView.setListener(new AlbumSetTypeSlotView.SimpleListener() {
 			@Override
 			public void onDown(int index) {
 				AlbumSetPage.this.onDown(index);
