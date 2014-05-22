@@ -27,6 +27,7 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 
 import com.android.gallery3d.R;
+import com.android.gallery3d.app.FilterUtils;
 import com.android.gallery3d.data.DataSourceType;
 import com.android.photos.data.GalleryBitmapPool;
 import com.android.gallery3d.util.ThreadPool;
@@ -110,18 +111,28 @@ public class AlbumTypeLabelMaker {
 		}
 	}
 
-	public synchronized void setLabelWidth(int width) {
+	public synchronized void setLabelWidth(int width, int height) {
 		if (mLabelWidth == width)
 			return;
-		mLabelWidth = width;
-		int borders = 2 * BORDER_SIZE;
-		mBitmapWidth = width + borders;
-		mBitmapHeight = mSpec.labelBackgroundHeight + borders;
+		if (AlbumSetTypeManager.get().getCurrentType()
+				== FilterUtils.CLUSTER_BY_LIST) {
+			width = width - height;
+			mLabelWidth = width;
+			int borders = 2 * BORDER_SIZE;
+			mBitmapWidth = width + borders;
+			mBitmapHeight = mSpec.labelBackgroundHeight*2 + borders;
+		} else {
+			mLabelWidth = width;
+			int borders = 2 * BORDER_SIZE;
+			mBitmapWidth = width + borders;
+			mBitmapHeight = mSpec.labelBackgroundHeight + borders;
+		}
+
 	}
 
-	public ThreadPool.Job<Bitmap> requestLabel(String title, String count,
-			int sourceType) {
-		return new AlbumLabelJob(title, count, sourceType);
+	public ThreadPool.Job<Bitmap> requestLabel(String title, String path, 
+			String count, int sourceType, int type) {
+		return new AlbumLabelJob(title, path, count, sourceType, type);
 	}
 
 	static void drawText(Canvas canvas, int x, int y, String text,
@@ -138,11 +149,14 @@ public class AlbumTypeLabelMaker {
 		private final String mTitle;
 		private final String mCount;
 		private final int mSourceType;
+		private final int mViewType;
 
-		public AlbumLabelJob(String title, String count, int sourceType) {
+		public AlbumLabelJob(String title, String path, String count, 
+				int sourceType, int type) {
 			mTitle = title;
 			mCount = count;
 			mSourceType = sourceType;
+			mViewType = type;
 		}
 
 		@Override
@@ -164,8 +178,12 @@ public class AlbumTypeLabelMaker {
 
 			if (bitmap == null) {
 				int borders = 2 * BORDER_SIZE;
+				int height = s.labelBackgroundHeight + borders;
+				if (mViewType == FilterUtils.CLUSTER_BY_LIST) {
+					height = s.labelBackgroundHeight + borders;
+				}
 				bitmap = Bitmap.createBitmap(labelWidth + borders,
-						s.labelBackgroundHeight + borders, Config.ARGB_8888);
+						height, Config.ARGB_8888);
 			}
 
 			Canvas canvas = new Canvas(bitmap);
@@ -189,6 +207,7 @@ public class AlbumTypeLabelMaker {
 			if (jc.isCancelled())
 				return null;
 			//
+			//x = x + (int)mTitlePaint.measureText(title)+s.titleRightMargin;
 			x = labelWidth - s.titleRightMargin;
 			y = (s.labelBackgroundHeight - s.countFontSize) / 2;
 			drawText(canvas, x, y, count, labelWidth - x, mCountPaint);

@@ -134,6 +134,7 @@ final class Config {
 			default:
 				slotTypeViewSpec.rowsLand = r.getInteger(R.integer.albumset_rows_land);
 				slotTypeViewSpec.rowsPort = r.getInteger(R.integer.albumset_rows_port);
+				break;
 			}
 		}
 	}

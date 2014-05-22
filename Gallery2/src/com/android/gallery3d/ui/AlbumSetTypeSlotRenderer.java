@@ -19,6 +19,7 @@ package com.android.gallery3d.ui;
 import com.android.gallery3d.R;
 import com.android.gallery3d.app.AbstractGalleryActivity;
 import com.android.gallery3d.app.AlbumSetDataLoader;
+import com.android.gallery3d.app.FilterUtils;
 import com.android.gallery3d.data.MediaObject;
 import com.android.gallery3d.data.Path;
 import com.android.gallery3d.glrenderer.ColorTexture;
@@ -199,20 +200,21 @@ public class AlbumSetTypeSlotRenderer extends AbstractSlotRenderer {
 		int b = AlbumLabelMaker.getBorderSize();
 		int h = mLabelSpec.labelBackgroundHeight;
 		
-		content.draw(canvas, -b, height - h + b, width + b + b, h);
-
-		return 0;
-	}
-
-	protected int renderPathLabel(GLCanvas canvas, AlbumSetEntry entry, int width,
-			int height) {
-		Texture content = checkLabelTexture(entry.labelPathTexture);
-		if (content == null) {
-			content = mWaitLoadingTexture;
+		switch(AlbumSetTypeManager.get().getCurrentType()) {
+		case FilterUtils.CLUSTER_BY_ALBUM:
+			content.draw(canvas, -b, height - h + b, width + b + b, h);
+			break;
+		case FilterUtils.CLUSTER_BY_CASCADING:
+			content.draw(canvas, -b, height - h + b, width + b + b, h);
+			break;
+		case FilterUtils.CLUSTER_BY_LIST:
+			content.draw(canvas, height+b, b, width - b - height, h);
+			break;
+		default:
+			content.draw(canvas, -b, height - h + b, width + b + b, h);
+			break;
 		}
-		int b = AlbumLabelMaker.getBorderSize();
-		int h = mLabelSpec.labelBackgroundHeight;
-		content.draw(canvas, height, height - h + b, width-height, h);
+
 		return 0;
 	}
 	
