@@ -537,15 +537,8 @@ public class SlotView extends GLView {
 			} else {
 				int rows = (mWidth > mHeight) ? mSpec.rowsLand : mSpec.rowsPort;
 				mSlotGap = mSpec.slotGap;
-				if (WIDE) {
-					mSlotHeight = Math.max(1, (mHeight - (rows - 1) * mSlotGap)
-							/ rows);
-					mSlotWidth = mSlotHeight - mSpec.slotHeightAdditional;
-				} else {
-					mSlotHeight = Math.max(1, (mHeight - (rows - 1) * mSlotGap)
-							/ rows);
-					mSlotWidth = mWidth;
-				}
+				mSlotHeight = Math.max(1, (mHeight - (rows - 1) * mSlotGap) / rows);
+				mSlotWidth = mSlotHeight - mSpec.slotHeightAdditional;
 			}
 
 			if (mRenderer != null) {
