@@ -21,6 +21,7 @@ import android.content.res.Resources;
 
 import com.android.gallery3d.R;
 import com.android.gallery3d.ui.AlbumSetSlotRenderer;
+import com.android.gallery3d.ui.AlbumSetTypeManager;
 import com.android.gallery3d.ui.AlbumSetTypeSlotRenderer;
 import com.android.gallery3d.ui.AlbumSetTypeSlotView;
 import com.android.gallery3d.ui.SlotView;
@@ -40,6 +41,9 @@ final class Config {
 		public static synchronized AlbumSetPage get(Context context) {
 			if (sInstance == null) {
 				sInstance = new AlbumSetPage(context);
+			}
+			if (context != null) {
+				sInstance.configSpecByType(context);
 			}
 			return sInstance;
 		}
@@ -83,8 +87,7 @@ final class Config {
 			labelSpec.countColor = r.getColor(R.color.albumset_label_count);
 			
 			slotTypeViewSpec = 	new AlbumSetTypeSlotView.Spec();
-			slotTypeViewSpec.rowsLand = r.getInteger(R.integer.albumset_rows_land);
-			slotTypeViewSpec.rowsPort = r.getInteger(R.integer.albumset_rows_port);
+			configSpecByType(context);
 			slotTypeViewSpec.slotGap = r
 					.getDimensionPixelSize(R.dimen.albumset_slot_gap);
 			slotTypeViewSpec.slotHeightAdditional = 0;
@@ -111,6 +114,27 @@ final class Config {
 			labelTypeSpec.titleColor = r.getColor(R.color.albumset_label_title);
 			labelTypeSpec.countColor = r.getColor(R.color.albumset_label_count);
 
+		}
+		
+		private void configSpecByType(Context context) {
+			Resources r = context.getResources();
+			switch(AlbumSetTypeManager.get().getCurrentType()) {
+			case FilterUtils.CLUSTER_BY_ALBUM:
+				slotTypeViewSpec.rowsLand = r.getInteger(R.integer.albumset_rows_land);
+				slotTypeViewSpec.rowsPort = r.getInteger(R.integer.albumset_rows_port);
+				break;
+			case FilterUtils.CLUSTER_BY_CASCADING:
+				slotTypeViewSpec.rowsLand = r.getInteger(R.integer.albumset_rows_land);
+				slotTypeViewSpec.rowsPort = r.getInteger(R.integer.albumset_rows_port);
+				break;
+			case FilterUtils.CLUSTER_BY_LIST:
+				slotTypeViewSpec.rowsLand = r.getInteger(R.integer.albumset_list_rows_land);
+				slotTypeViewSpec.rowsPort = r.getInteger(R.integer.albumset_list_rows_port);
+				break;
+			default:
+				slotTypeViewSpec.rowsLand = r.getInteger(R.integer.albumset_rows_land);
+				slotTypeViewSpec.rowsPort = r.getInteger(R.integer.albumset_rows_port);
+			}
 		}
 	}
 

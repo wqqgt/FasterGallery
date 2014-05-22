@@ -562,6 +562,8 @@ public class AlbumSetTypeSlotView extends GLView {
 			case FilterUtils.CLUSTER_BY_LIST:
 				width = mWidth;
 				break;
+			default:
+				width = mSlotHeight - mSpec.slotHeightAdditional;
 			}
 			return width;
 		}

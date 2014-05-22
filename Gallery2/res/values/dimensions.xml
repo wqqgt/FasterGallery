@@ -38,8 +38,8 @@
     <dimen name="albumset_icon_size">25dp</dimen>
 
     <!-- configuration for album page -->
-    <integer name="album_rows_land">2</integer>
-    <integer name="album_rows_port">4</integer>
+    <integer name="album_rows_land">3</integer>
+    <integer name="album_rows_port">5</integer>
     <dimen name="album_slot_gap">5dp</dimen>
 
     <!-- configuration for manage page -->
