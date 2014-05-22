@@ -339,11 +339,6 @@ public class AlbumSetPage extends ActivityState implements
 		//TODO add new Views in initialize
 		mSelectedAction = data.getInt(AlbumSetPage.KEY_SELECTED_CLUSTER_TYPE,
 				FilterUtils.CLUSTER_BY_ALBUM);
-		if (mSelectedAction == FilterUtils.CLUSTER_BY_LIST) {
-			SlotView.WIDE = false;
-		} else {
-			SlotView.WIDE = true;
-		}
 		initializeViews();
 		initializeData(data);
 		Context context = mActivity.getAndroidContext();
@@ -360,7 +355,6 @@ public class AlbumSetPage extends ActivityState implements
 			public void handleMessage(Message message) {
 				switch (message.what) {
 				case MSG_PICK_ALBUM: {
-					SlotView.WIDE = true;
 					pickAlbum(message.arg1);
 					break;
 				}
@@ -486,7 +480,6 @@ public class AlbumSetPage extends ActivityState implements
 
 	@Override
 	public void onResume() {
-		reConfigSpec(mConfig.slotViewSpec);
 		super.onResume();
 		mIsActive = true;
 		setContentPane(mRootPane);
@@ -525,8 +518,7 @@ public class AlbumSetPage extends ActivityState implements
 		mTypeManager = AlbumSetTypeManager.get();
 		mTypeManager.setCurrentType(mSelectedAction);
 		mConfig = Config.AlbumSetPage.get(mActivity);
-		reConfigSpec(mConfig.slotViewSpec);
-		mSlotView = new AlbumSetTypeSlotView(mActivity, mConfig.slotListViewSpec);
+		mSlotView = new AlbumSetTypeSlotView(mActivity, mConfig.slotTypeViewSpec);
 		
 		//TODO  switch view by mSelectType
 		mAlbumSetView = new AlbumSetTypeSlotRenderer(mActivity, mSelectionManager,
@@ -562,19 +554,6 @@ public class AlbumSetPage extends ActivityState implements
 			}
 		});
 		mRootPane.addComponent(mSlotView);
-	}
-
-	private void reConfigSpec(Spec slotViewSpec) {
-		Resources r = mActivity.getResources();
-		if (mSelectedAction == FilterUtils.CLUSTER_BY_LIST) {
-			slotViewSpec.rowsLand = r.getInteger(R.integer.albumset_list_rows_land);
-			slotViewSpec.rowsPort = r.getInteger(R.integer.albumset_list_rows_port);
-			SlotView.WIDE = false;
-		} else {
-			slotViewSpec.rowsLand = r.getInteger(R.integer.albumset_rows_land);
-			slotViewSpec.rowsPort = r.getInteger(R.integer.albumset_rows_port);
-			SlotView.WIDE = true;
-		}
 	}
 
 	@Override

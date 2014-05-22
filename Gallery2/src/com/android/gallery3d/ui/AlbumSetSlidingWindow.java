@@ -91,7 +91,6 @@ public class AlbumSetSlidingWindow implements AlbumSetDataLoader.DataListener {
 		public boolean isWaitLoadingDisplayed;
 		public long setDataVersion;
 		public long coverDataVersion;
-		private BitmapLoader labelPathLoader;
 		private BitmapLoader labelLoader;
 		private BitmapLoader coverLoader;
 	}
@@ -223,8 +222,6 @@ public class AlbumSetSlidingWindow implements AlbumSetDataLoader.DataListener {
 			entry.coverLoader.startLoad();
 		if (entry.labelLoader != null)
 			entry.labelLoader.startLoad();
-		if ((!SlotView.WIDE) && entry.labelPathLoader != null)
-			entry.labelPathLoader.startLoad();
 	}
 
 	private void cancelImagesInSlot(int slotIndex) {
@@ -235,9 +232,6 @@ public class AlbumSetSlidingWindow implements AlbumSetDataLoader.DataListener {
 			entry.coverLoader.cancelLoad();
 		if (entry.labelLoader != null)
 			entry.labelLoader.cancelLoad();
-		if ((!SlotView.WIDE) && entry.labelPathLoader != null) {
-			entry.labelPathLoader.cancelLoad();
-		}
 	}
 
 	private static long getDataVersion(MediaObject object) {
@@ -251,13 +245,8 @@ public class AlbumSetSlidingWindow implements AlbumSetDataLoader.DataListener {
 			entry.coverLoader.recycle();
 		if (entry.labelLoader != null)
 			entry.labelLoader.recycle();
-		if ((!SlotView.WIDE) && entry.labelPathLoader != null) {
-			entry.labelPathLoader.recycle();
-		}
 		if (entry.labelTexture != null)
 			entry.labelTexture.recycle();
-		if ((!SlotView.WIDE) && entry.labelPathTexture != null)
-			entry.labelPathTexture.recycle();
 		if (entry.bitmapTexture != null)
 			entry.bitmapTexture.recycle();
 		mData[slotIndex % mData.length] = null;
@@ -295,17 +284,6 @@ public class AlbumSetSlidingWindow implements AlbumSetDataLoader.DataListener {
 			}
 			if (album != null) {
 				entry.labelLoader = new AlbumLabelLoader(slotIndex, title,
-						totalCount, sourceType);
-			}
-			
-			if ((!SlotView.WIDE) && entry.labelPathLoader != null) {
-				entry.labelPathLoader.recycle();
-				entry.labelPathLoader = null;
-				entry.labelPathTexture = null;
-			}
-			if ((!SlotView.WIDE) && album != null) {
-				entry.labelPathLoader = new AlbumLabelPathLoader(slotIndex,
-						album.getPath().toString(),
 						totalCount, sourceType);
 			}
 		}
@@ -349,10 +327,6 @@ public class AlbumSetSlidingWindow implements AlbumSetDataLoader.DataListener {
 		if (entry.labelTexture != null) {
 			mLabelUploader.addBgTexture(entry.labelTexture);
 		}
-		
-		if ((!SlotView.WIDE) && entry.labelPathTexture != null) {
-			mLabelUploader.addBgTexture(entry.labelPathTexture);
-		}
 	}
 
 	private void updateTextureUploadQueue() {
@@ -369,10 +343,6 @@ public class AlbumSetSlidingWindow implements AlbumSetDataLoader.DataListener {
 			}
 			if (entry.labelTexture != null) {
 				mLabelUploader.addFgTexture(entry.labelTexture);
-			}
-			
-			if ((!SlotView.WIDE) && entry.labelPathTexture != null) {
-				mLabelUploader.addFgTexture(entry.labelPathTexture);
 			}
 		}
 

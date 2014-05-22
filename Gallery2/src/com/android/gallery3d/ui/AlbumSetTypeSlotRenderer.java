@@ -133,10 +133,6 @@ public class AlbumSetTypeSlotRenderer extends AbstractSlotRenderer {
 		int renderRequestFlags = 0;
 		renderRequestFlags |= renderContent(canvas, entry, width, height);
 		renderRequestFlags |= renderLabel(canvas, entry, width, height);
-		
-		if(!SlotView.WIDE) {
-			renderRequestFlags |= renderPathLabel(canvas, entry, width, height);	
-		}
 		renderRequestFlags |= renderOverlay(canvas, index, entry, width, height);
 
 		return renderRequestFlags;
@@ -202,11 +198,8 @@ public class AlbumSetTypeSlotRenderer extends AbstractSlotRenderer {
 		}
 		int b = AlbumLabelMaker.getBorderSize();
 		int h = mLabelSpec.labelBackgroundHeight;
-		if (SlotView.WIDE) {
-			content.draw(canvas, -b, height - h + b, width + b + b, h);
-		} else {
-			content.draw(canvas, height, b, width-height, h);	
-		}
+		
+		content.draw(canvas, -b, height - h + b, width + b + b, h);
 
 		return 0;
 	}

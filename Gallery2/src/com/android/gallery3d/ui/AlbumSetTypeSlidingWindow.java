@@ -223,7 +223,7 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 			entry.coverLoader.startLoad();
 		if (entry.labelLoader != null)
 			entry.labelLoader.startLoad();
-		if ((!SlotView.WIDE) && entry.labelPathLoader != null)
+		if (entry.labelPathLoader != null)
 			entry.labelPathLoader.startLoad();
 	}
 
@@ -235,7 +235,7 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 			entry.coverLoader.cancelLoad();
 		if (entry.labelLoader != null)
 			entry.labelLoader.cancelLoad();
-		if ((!SlotView.WIDE) && entry.labelPathLoader != null) {
+		if (entry.labelPathLoader != null) {
 			entry.labelPathLoader.cancelLoad();
 		}
 	}
@@ -251,12 +251,12 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 			entry.coverLoader.recycle();
 		if (entry.labelLoader != null)
 			entry.labelLoader.recycle();
-		if ((!SlotView.WIDE) && entry.labelPathLoader != null) {
+		if (entry.labelPathLoader != null) {
 			entry.labelPathLoader.recycle();
 		}
 		if (entry.labelTexture != null)
 			entry.labelTexture.recycle();
-		if ((!SlotView.WIDE) && entry.labelPathTexture != null)
+		if (entry.labelPathTexture != null)
 			entry.labelPathTexture.recycle();
 		if (entry.bitmapTexture != null)
 			entry.bitmapTexture.recycle();
@@ -298,12 +298,12 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 						totalCount, sourceType);
 			}
 			
-			if ((!SlotView.WIDE) && entry.labelPathLoader != null) {
+			if (entry.labelPathLoader != null) {
 				entry.labelPathLoader.recycle();
 				entry.labelPathLoader = null;
 				entry.labelPathTexture = null;
 			}
-			if ((!SlotView.WIDE) && album != null) {
+			if (album != null) {
 				entry.labelPathLoader = new AlbumLabelPathLoader(slotIndex,
 						album.getPath().toString(),
 						totalCount, sourceType);
@@ -350,7 +350,7 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 			mLabelUploader.addBgTexture(entry.labelTexture);
 		}
 		
-		if ((!SlotView.WIDE) && entry.labelPathTexture != null) {
+		if (entry.labelPathTexture != null) {
 			mLabelUploader.addBgTexture(entry.labelPathTexture);
 		}
 	}
@@ -371,7 +371,7 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 				mLabelUploader.addFgTexture(entry.labelTexture);
 			}
 			
-			if ((!SlotView.WIDE) && entry.labelPathTexture != null) {
+			if (entry.labelPathTexture != null) {
 				mLabelUploader.addFgTexture(entry.labelPathTexture);
 			}
 		}

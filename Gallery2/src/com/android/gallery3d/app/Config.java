@@ -30,7 +30,7 @@ final class Config {
 		private static AlbumSetPage sInstance;
 
 		public SlotView.Spec slotViewSpec;
-		public AlbumSetTypeSlotView.Spec slotListViewSpec;
+		public AlbumSetTypeSlotView.Spec slotTypeViewSpec;
 		public AlbumSetSlotRenderer.LabelSpec labelSpec;
 		public AlbumSetTypeSlotRenderer.LabelSpec labelTypeSpec;
 		public int paddingTop;
@@ -82,12 +82,12 @@ final class Config {
 			labelSpec.titleColor = r.getColor(R.color.albumset_label_title);
 			labelSpec.countColor = r.getColor(R.color.albumset_label_count);
 			
-			slotListViewSpec = 	new AlbumSetTypeSlotView.Spec();
-			slotListViewSpec.rowsLand = r.getInteger(R.integer.albumset_rows_land);
-			slotListViewSpec.rowsPort = r.getInteger(R.integer.albumset_rows_port);
-			slotListViewSpec.slotGap = r
+			slotTypeViewSpec = 	new AlbumSetTypeSlotView.Spec();
+			slotTypeViewSpec.rowsLand = r.getInteger(R.integer.albumset_rows_land);
+			slotTypeViewSpec.rowsPort = r.getInteger(R.integer.albumset_rows_port);
+			slotTypeViewSpec.slotGap = r
 					.getDimensionPixelSize(R.dimen.albumset_slot_gap);
-			slotListViewSpec.slotHeightAdditional = 0;
+			slotTypeViewSpec.slotHeightAdditional = 0;
 			
 			labelTypeSpec = new AlbumSetTypeSlotRenderer.LabelSpec();
 			labelTypeSpec.labelBackgroundHeight = r
