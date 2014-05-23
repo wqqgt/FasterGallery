@@ -16,12 +16,15 @@
 
 package com.android.gallery3d.ui;
 
+import java.util.ArrayList;
+
 import android.graphics.Bitmap;
 import android.os.Message;
 
 import com.android.gallery3d.R;
 import com.android.gallery3d.app.AbstractGalleryActivity;
 import com.android.gallery3d.app.AlbumSetDataLoader;
+import com.android.gallery3d.app.AlbumSetDataLoader.AlbumSetCoverItem;
 import com.android.gallery3d.common.Utils;
 import com.android.gallery3d.data.DataManager;
 import com.android.gallery3d.data.DataSourceType;
@@ -76,7 +79,7 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 
 	public static class AlbumSetEntry {
 		public MediaSet album;
-		public MediaItem coverItem;
+		public AlbumSetCoverItem coverItem;
 		public Texture content;
 		public BitmapTexture labelTexture;
 		public TiledTexture bitmapTexture;
@@ -237,6 +240,11 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 		return object == null ? MediaSet.INVALID_DATA_VERSION : object
 				.getDataVersion();
 	}
+	
+	private static long getCoverDataVersion(AlbumSetCoverItem object) {
+		return object == null ? MediaSet.INVALID_DATA_VERSION : object.getItem()
+				.getDataVersion();
+	}
 
 	private void freeSlotContent(int slotIndex) {
 		AlbumSetEntry entry = mData[slotIndex % mData.length];
@@ -260,7 +268,7 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 
 	private void updateAlbumSetEntry(AlbumSetEntry entry, int slotIndex) {
 		MediaSet album = mSource.getMediaSet(slotIndex);
-		MediaItem cover = mSource.getCoverItem(slotIndex);
+		AlbumSetCoverItem cover = mSource.getCoverItems(slotIndex);
 		int totalCount = mSource.getTotalCount(slotIndex);
 
 		entry.album = album;
@@ -288,9 +296,9 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 		}
 
 		entry.coverItem = cover;
-		if (getDataVersion(cover) != entry.coverDataVersion) {
-			entry.coverDataVersion = getDataVersion(cover);
-			entry.rotation = (cover == null) ? 0 : cover.getRotation();
+		if (getCoverDataVersion(cover) != entry.coverDataVersion) {
+			entry.coverDataVersion = getCoverDataVersion(cover);
+			entry.rotation = (cover == null) ? 0 : cover.getItem().getRotation();
 			if (entry.coverLoader != null) {
 				entry.coverLoader.recycle();
 				entry.coverLoader = null;
@@ -442,18 +450,20 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 	}
 
 	private class AlbumCoverLoader extends BitmapLoader implements EntryUpdater {
-		private MediaItem mMediaItem;
+		private AlbumSetCoverItem mMediaItems;
 		private final int mSlotIndex;
+		private int mCurrentItemIndex;
 
-		public AlbumCoverLoader(int slotIndex, MediaItem item) {
+		public AlbumCoverLoader(int slotIndex, AlbumSetCoverItem items) {
 			mSlotIndex = slotIndex;
-			mMediaItem = item;
+			mMediaItems = items;
+			mCurrentItemIndex = 0;
 		}
 
 		@Override
 		protected Future<Bitmap> submitBitmapTask(FutureListener<Bitmap> l) {
 			return mThreadPool.submit(
-					mMediaItem.requestImage(MediaItem.TYPE_MICROTHUMBNAIL), l);
+					mMediaItems.getItem().requestImage(MediaItem.TYPE_MICROTHUMBNAIL), l);
 		}
 
 		@Override
@@ -471,6 +481,7 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 			TiledTexture texture = new TiledTexture(bitmap);
 			entry.bitmapTexture = texture;
 			entry.content = texture;
+			++mCurrentItemIndex;
 
 			if (isActiveSlot(mSlotIndex)) {
 				mContentUploader.addTexture(texture);

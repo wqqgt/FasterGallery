@@ -86,6 +86,18 @@ public abstract class MediaSet extends MediaObject {
 		}
 		return null;
 	}
+	
+	public ArrayList<MediaItem> getCoverMediaItems(int start, int count) {
+		ArrayList<MediaItem> items = getMediaItem(start, count);
+		if (items.size() > 0)
+			return items;
+		for (int i = 0, n = getSubMediaSetCount(); i < n; i++) {
+			ArrayList<MediaItem> cover = getSubMediaSet(i).getCoverMediaItems(0, 4);
+			if (cover.size() > 0)
+				return cover;
+		}
+		return null;
+	}
 
 	public int getSubMediaSetCount() {
 		return 0;

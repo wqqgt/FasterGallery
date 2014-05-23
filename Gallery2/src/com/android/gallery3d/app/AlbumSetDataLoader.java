@@ -28,6 +28,7 @@ import com.android.gallery3d.data.MediaSet;
 import com.android.gallery3d.data.Path;
 import com.android.gallery3d.ui.SynchronizedHandler;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -44,6 +45,8 @@ public class AlbumSetDataLoader {
 	private static final int MSG_LOAD_START = 1;
 	private static final int MSG_LOAD_FINISH = 2;
 	private static final int MSG_RUN_OBJECT = 3;
+	
+	private static final int MEDIA_SET_THUMBILE_COUNT = 4;
 
 	public static interface DataListener {
 		public void onContentChanged(int index);
@@ -52,10 +55,40 @@ public class AlbumSetDataLoader {
 	}
 
 	private final MediaSet[] mData;
-	private final MediaItem[] mCoverItem;
+	private final AlbumSetCoverItem[] mCoverItem;
 	private final int[] mTotalCount;
 	private final long[] mItemVersion;
 	private final long[] mSetVersion;
+	
+	public static final class AlbumSetCoverItem {
+		private ArrayList<MediaItem> mCover;
+
+		public AlbumSetCoverItem(ArrayList<MediaItem> cover) {
+			mCover = cover;
+		}
+		
+		public MediaItem getItem() {
+			if(mCover != null) {
+				return mCover.get(0);
+			}
+			return null;
+		}
+		
+		public ArrayList<MediaItem> getItems() {
+			if (mCover != null) {
+				return mCover;
+			}
+			return null;
+		}
+		
+		public void clearAll() {
+			if (mCover == null) {
+				return;
+			}
+			mCover.clear();
+			mCover = null;
+		}
+	}
 
 	private int mActiveStart = 0;
 	private int mActiveEnd = 0;
@@ -78,7 +111,7 @@ public class AlbumSetDataLoader {
 	public AlbumSetDataLoader(AbstractGalleryActivity activity,
 			MediaSet albumSet, int cacheSize) {
 		mSource = Utils.checkNotNull(albumSet);
-		mCoverItem = new MediaItem[cacheSize];
+		mCoverItem = new AlbumSetCoverItem[cacheSize];
 		mData = new MediaSet[cacheSize];
 		mTotalCount = new int[cacheSize];
 		mItemVersion = new long[cacheSize];
@@ -132,6 +165,11 @@ public class AlbumSetDataLoader {
 
 	public MediaItem getCoverItem(int index) {
 		assertIsActive(index);
+		return mCoverItem[index % mCoverItem.length].getItem();
+	}
+	
+	public AlbumSetCoverItem getCoverItems(int index) {
+		assertIsActive(index);
 		return mCoverItem[index % mCoverItem.length];
 	}
 
@@ -167,7 +205,7 @@ public class AlbumSetDataLoader {
 
 	private void clearSlot(int slotIndex) {
 		mData[slotIndex] = null;
-		mCoverItem[slotIndex] = null;
+		mCoverItem[slotIndex].clearAll();
 		mTotalCount[slotIndex] = 0;
 		mItemVersion[slotIndex] = MediaObject.INVALID_DATA_VERSION;
 		mSetVersion[slotIndex] = MediaObject.INVALID_DATA_VERSION;
@@ -244,7 +282,7 @@ public class AlbumSetDataLoader {
 
 		public int size;
 		public MediaSet item;
-		public MediaItem cover;
+		public ArrayList<MediaItem> cover;
 		public int totalCount;
 	}
 
@@ -313,7 +351,7 @@ public class AlbumSetDataLoader {
 					return null;
 				mItemVersion[pos] = itemVersion;
 				mData[pos] = info.item;
-				mCoverItem[pos] = info.cover;
+				mCoverItem[pos] = new AlbumSetCoverItem(info.cover);
 				mTotalCount[pos] = info.totalCount;
 				if (mDataListener != null && info.index >= mActiveStart
 						&& info.index < mActiveEnd) {
@@ -389,7 +427,7 @@ public class AlbumSetDataLoader {
 					info.item = mSource.getSubMediaSet(info.index);
 					if (info.item == null)
 						continue;
-					info.cover = info.item.getCoverMediaItem();
+					info.cover = info.item.getCoverMediaItems(0, MEDIA_SET_THUMBILE_COUNT);
 					info.totalCount = info.item.getTotalMediaItemCount();
 				}
 				executeAndWait(new UpdateContent(info));
