@@ -495,6 +495,53 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 			}
 		}
 	}
+	
+	private class AlbumTypeCoverLoader extends BitmapLoader implements EntryUpdater {
+		private AlbumSetCoverItem mMediaItems;
+		private final int mSlotIndex;
+		private int mCurrentItemIndex;
+
+		public AlbumTypeCoverLoader(int slotIndex, AlbumSetCoverItem items) {
+			mSlotIndex = slotIndex;
+			mMediaItems = items;
+			mCurrentItemIndex = 0;
+		}
+
+		@Override
+		protected Future<Bitmap> submitBitmapTask(FutureListener<Bitmap> l) {
+			return mThreadPool.submit(
+					mMediaItems.getItem().requestImage(MediaItem.TYPE_MICROTHUMBNAIL), l);
+		}
+
+		@Override
+		protected void onLoadComplete(Bitmap bitmap) {
+			mHandler.obtainMessage(MSG_UPDATE_ALBUM_ENTRY, this).sendToTarget();
+		}
+
+		@Override
+		public void updateEntry() {
+			Bitmap bitmap = getBitmap();
+			if (bitmap == null)
+				return; // error or recycled
+
+			AlbumSetEntry entry = mData[mSlotIndex % mData.length];
+			TiledTexture texture = new TiledTexture(bitmap);
+			entry.bitmapTexture = texture;
+			entry.content = texture;
+			++mCurrentItemIndex;
+
+			if (isActiveSlot(mSlotIndex)) {
+				mContentUploader.addTexture(texture);
+				--mActiveRequestCount;
+				if (mActiveRequestCount == 0)
+					requestNonactiveImages();
+				if (mListener != null)
+					mListener.onContentChanged();
+			} else {
+				mContentUploader.addTexture(texture);
+			}
+		}
+	}
 
 	private static int identifyCacheFlag(MediaSet set) {
 		if (set == null
