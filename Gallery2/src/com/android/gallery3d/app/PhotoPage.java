@@ -1235,7 +1235,7 @@ public abstract class PhotoPage extends ActivityState implements
 		boolean playVideo = ((supported & MediaItem.SUPPORT_PLAY) != 0);
 		boolean unlock = ((supported & MediaItem.SUPPORT_UNLOCK) != 0);
 		boolean goBack = ((supported & MediaItem.SUPPORT_BACK) != 0);
-		boolean launchCamera = ((supported & MediaItem.SUPPORT_CAMERA_SHORTCUT) != 0);
+//		boolean launchCamera = ((supported & MediaItem.SUPPORT_CAMERA_SHORTCUT) != 0);
 
 		if (playVideo) {
 			// determine if the point is at center (1/6) of the photo view.
@@ -1258,8 +1258,8 @@ public abstract class PhotoPage extends ActivityState implements
 			Intent intent = new Intent(mActivity, Gallery.class);
 			intent.putExtra(Gallery.KEY_DISMISS_KEYGUARD, true);
 			mActivity.startActivity(intent);
-		} else if (launchCamera) {
-			//launchCamera();
+//		} else if (launchCamera) {
+//			launchCamera();
 		} else {
 			toggleBars();
 		}
