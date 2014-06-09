@@ -39,8 +39,6 @@ import android.widget.RelativeLayout;
 import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
-import com.android.camera.CameraActivity;
-import com.android.camera.ProxyLauncher;
 import com.android.gallery3d.R;
 import com.android.gallery3d.common.ApiHelper;
 import com.android.gallery3d.data.ComboAlbum;
@@ -360,7 +358,7 @@ public abstract class PhotoPage extends ActivityState implements
 					if (stayedOnCamera) {
 						if (mAppBridge == null
 								&& mMediaSet.getTotalMediaItemCount() > 1) {
-							launchCamera();
+							//launchCamera();
 							/*
 							 * We got here by swiping from photo 1 to the
 							 * placeholder, so make it be the thing that is in
@@ -725,12 +723,12 @@ public abstract class PhotoPage extends ActivityState implements
 		overrideTransitionToEditor();
 	}
 
-	private void launchCamera() {
-		Intent intent = new Intent(mActivity, CameraActivity.class)
-				.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		mRecenterCameraOnResume = false;
-		mActivity.startActivity(intent);
-	}
+//	private void launchCamera() {
+//		Intent intent = new Intent(mActivity, CameraActivity.class)
+//				.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//		mRecenterCameraOnResume = false;
+//		mActivity.startActivity(intent);
+//	}
 
 	private void launchPhotoEditor() {
 		MediaItem current = mModel.getMediaItem(0);
@@ -1261,7 +1259,7 @@ public abstract class PhotoPage extends ActivityState implements
 			intent.putExtra(Gallery.KEY_DISMISS_KEYGUARD, true);
 			mActivity.startActivity(intent);
 		} else if (launchCamera) {
-			launchCamera();
+			//launchCamera();
 		} else {
 			toggleBars();
 		}
@@ -1360,10 +1358,10 @@ public abstract class PhotoPage extends ActivityState implements
 			// This is a reset, not a canceled
 			return;
 		}
-		if (resultCode == ProxyLauncher.RESULT_USER_CANCELED) {
-			// Unmap reset vs. canceled
-			resultCode = Activity.RESULT_CANCELED;
-		}
+//		if (resultCode == ProxyLauncher.RESULT_USER_CANCELED) {
+//			// Unmap reset vs. canceled
+//			resultCode = Activity.RESULT_CANCELED;
+//		}
 		mRecenterCameraOnResume = false;
 		switch (requestCode) {
 		case REQUEST_EDIT:

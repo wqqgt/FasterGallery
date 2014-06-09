@@ -29,7 +29,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
-import com.android.camera.CameraActivity;
 import com.android.gallery3d.R;
 
 import java.util.ArrayList;
@@ -81,9 +80,9 @@ public class GalleryActivity extends Activity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_camera:
-			Intent intent = new Intent(this, CameraActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
+//			Intent intent = new Intent(this, CameraActivity.class);
+//			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//			startActivity(intent);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

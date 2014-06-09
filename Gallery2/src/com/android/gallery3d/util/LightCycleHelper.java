@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.android.camera.CameraModule;
 import com.android.gallery3d.app.GalleryApp;
 import com.android.gallery3d.app.StitchingProgressManager;
 
@@ -75,10 +74,6 @@ public class LightCycleHelper {
 
 	public static PanoramaMetadata getPanoramaMetadata(Context context, Uri uri) {
 		return NOT_PANORAMA;
-	}
-
-	public static CameraModule createPanoramaModule() {
-		return null;
 	}
 
 	public static StitchingProgressManager createStitchingManagerInstance(

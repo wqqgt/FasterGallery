@@ -24,7 +24,6 @@ import android.mtp.MtpObjectInfo;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
-import com.android.camera.Exif;
 import com.android.photos.data.GalleryBitmapPool;
 
 public class MtpBitmapFetch {
@@ -102,7 +101,7 @@ public class MtpBitmapFetch {
 			return null;
 		}
 
-		return new BitmapWithMetadata(created, Exif.getOrientation(imageBytes));
+		return null;//new BitmapWithMetadata(created, Exif.getOrientation(imageBytes));
 	}
 
 	public static void configureForContext(Context context) {

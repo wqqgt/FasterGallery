@@ -207,12 +207,6 @@
                 android:label="@string/trim_label">
         </activity>
 
-        <permission android:name="com.android.gallery3d.filtershow.permission.READ"
-                    android:protectionLevel="signature" />
-
-        <permission android:name="com.android.gallery3d.filtershow.permission.WRITE"
-                    android:protectionLevel="signature" />
-
         <provider
             android:name="com.android.gallery3d.filtershow.provider.SharedImageProvider"
             android:authorities="com.android.gallery3d.filtershow.provider.SharedImageProvider"
@@ -284,82 +278,6 @@
                 android:configChanges="keyboardHidden|orientation|screenSize"
                 android:theme="@style/Theme.Gallery.Dialog"/>
 
-        <activity android:name="com.android.camera.CameraActivity"
-                android:taskAffinity="com.android.camera.CameraActivity"
-                android:label="@string/camera_label"
-                android:theme="@style/Theme.Camera"
-                android:icon="@mipmap/ic_launcher_camera"
-                android:configChanges="orientation|screenSize|keyboardHidden"
-                android:clearTaskOnLaunch="true"
-                android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
-            <intent-filter>
-                <action android:name="android.media.action.IMAGE_CAPTURE" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.media.action.STILL_IMAGE_CAMERA" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <meta-data android:name="com.android.keyguard.layout"
-                    android:resource="@layout/keyguard_widget" />
-        </activity>
-
-        <activity android:name="com.android.camera.SecureCameraActivity"
-                android:taskAffinity="com.android.camera.SecureCameraActivity"
-                android:excludeFromRecents="true"
-                android:label="@string/camera_label"
-                android:theme="@style/Theme.Camera"
-                android:icon="@mipmap/ic_launcher_camera"
-                android:configChanges="orientation|screenSize|keyboardHidden"
-                android:clearTaskOnLaunch="true"
-                android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
-            <intent-filter>
-                <action android:name="android.media.action.STILL_IMAGE_CAMERA_SECURE" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.media.action.IMAGE_CAPTURE_SECURE" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <meta-data android:name="com.android.keyguard.layout"
-                    android:resource="@layout/keyguard_widget" />
-        </activity>
-
-        <activity-alias android:icon="@mipmap/ic_launcher_camera"
-                        android:label="@string/camera_label"
-                        android:name="com.android.camera.CameraLauncher"
-                        android:targetActivity="com.android.camera.CameraActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
-
-        <activity-alias android:icon="@mipmap/ic_launcher_camera"
-                        android:label="@string/camera_label"
-                        android:name="com.android.camera.Camera"
-                        android:targetActivity="com.android.camera.CameraActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity-alias>
-
-        <activity-alias android:icon="@mipmap/ic_launcher_video_camera"
-                android:label="@string/video_camera_label"
-                android:name="com.android.camera.VideoCamera"
-                android:targetActivity="com.android.camera.CameraActivity" >
-            <intent-filter>
-                <action android:name="android.media.action.VIDEO_CAMERA" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.media.action.VIDEO_CAPTURE" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity-alias>
-
         <receiver android:name="com.android.gallery3d.gadget.PhotoAppWidgetProvider"
                 android:label="@string/appwidget_title">
             <intent-filter>
@@ -395,9 +313,6 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
-        </activity>
-        <activity android:name="com.android.camera.ProxyLauncher"
-                android:theme="@style/Theme.ProxyLauncher">
         </activity>
         <service android:name="com.android.gallery3d.app.BatchService" />
         <service android:name="com.android.camera.MediaSaveService" />
