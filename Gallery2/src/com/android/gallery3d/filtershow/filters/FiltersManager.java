@@ -52,30 +52,30 @@ public class FiltersManager extends BaseFiltersManager {
 	@Override
 	public void addBorders(Context context,
 			Vector<FilterRepresentation> representations) {
-		// Regular borders
-		representations.add(new FilterImageBorderRepresentation(
-				R.drawable.filtershow_border_4x5));
-		representations.add(new FilterImageBorderRepresentation(
-				R.drawable.filtershow_border_brush));
-		representations.add(new FilterImageBorderRepresentation(
-				R.drawable.filtershow_border_grunge));
-		representations.add(new FilterImageBorderRepresentation(
-				R.drawable.filtershow_border_sumi_e));
-		representations.add(new FilterImageBorderRepresentation(
-				R.drawable.filtershow_border_tape));
-		representations.add(new FilterColorBorderRepresentation(Color.BLACK,
-				mImageBorderSize, 0));
-		representations.add(new FilterColorBorderRepresentation(Color.BLACK,
-				mImageBorderSize, mImageBorderSize));
-		representations.add(new FilterColorBorderRepresentation(Color.WHITE,
-				mImageBorderSize, 0));
-		representations.add(new FilterColorBorderRepresentation(Color.WHITE,
-				mImageBorderSize, mImageBorderSize));
-		int creamColor = Color.argb(255, 237, 237, 227);
-		representations.add(new FilterColorBorderRepresentation(creamColor,
-				mImageBorderSize, 0));
-		representations.add(new FilterColorBorderRepresentation(creamColor,
-				mImageBorderSize, mImageBorderSize));
+//		// Regular borders
+//		representations.add(new FilterImageBorderRepresentation(
+//				R.drawable.filtershow_border_4x5));
+//		representations.add(new FilterImageBorderRepresentation(
+//				R.drawable.filtershow_border_brush));
+//		representations.add(new FilterImageBorderRepresentation(
+//				R.drawable.filtershow_border_grunge));
+//		representations.add(new FilterImageBorderRepresentation(
+//				R.drawable.filtershow_border_sumi_e));
+//		representations.add(new FilterImageBorderRepresentation(
+//				R.drawable.filtershow_border_tape));
+//		representations.add(new FilterColorBorderRepresentation(Color.BLACK,
+//				mImageBorderSize, 0));
+//		representations.add(new FilterColorBorderRepresentation(Color.BLACK,
+//				mImageBorderSize, mImageBorderSize));
+//		representations.add(new FilterColorBorderRepresentation(Color.WHITE,
+//				mImageBorderSize, 0));
+//		representations.add(new FilterColorBorderRepresentation(Color.WHITE,
+//				mImageBorderSize, mImageBorderSize));
+//		int creamColor = Color.argb(255, 237, 237, 227);
+//		representations.add(new FilterColorBorderRepresentation(creamColor,
+//				mImageBorderSize, 0));
+//		representations.add(new FilterColorBorderRepresentation(creamColor,
+//				mImageBorderSize, mImageBorderSize));
 	}
 
 	public static FiltersManager getHighresManager() {

@@ -364,7 +364,7 @@ public class FilterShowActivity extends FragmentActivity implements
 		borders.add(new FilterImageBorderRepresentation(0));
 
 		// Google-build borders
-		FiltersManager.getManager().addBorders(this, borders);
+		//FiltersManager.getManager().addBorders(this, borders);
 
 		for (int i = 0; i < borders.size(); i++) {
 			FilterRepresentation filter = borders.elementAt(i);
