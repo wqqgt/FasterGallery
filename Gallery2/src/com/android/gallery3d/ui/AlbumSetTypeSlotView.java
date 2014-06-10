@@ -463,7 +463,7 @@ public class AlbumSetTypeSlotView extends GLView {
 			col = index - row * mUnitCount;
 
 			int x = mHorizontalPadding.get() + col * (mSlotWidth + mSlotGap);
-			int y = mVerticalPadding.get() + row * (mSlotHeight + mSlotGap);
+			int y = row * (mSlotHeight + mSlotGap);//mVerticalPadding.get() + row * (mSlotHeight + mSlotGap);
 			rect.set(x, y, x + mSlotWidth, y + mSlotHeight);
 			return rect;
 		}
@@ -612,7 +612,7 @@ public class AlbumSetTypeSlotView extends GLView {
 			int absoluteY = Math.round(y) + mScrollPosition;
 
 			absoluteX -= mHorizontalPadding.get();
-			absoluteY -= mVerticalPadding.get();
+//			absoluteY -= mVerticalPadding.get();
 
 			if (absoluteX < 0 || absoluteY < 0) {
 				return INDEX_NONE;
