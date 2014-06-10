@@ -101,15 +101,15 @@ public class GalleryActionBar implements OnNavigationListener {
 					R.string.select_album_style_two, R.string.group_by_album),
 			new ActionItem(FilterUtils.CLUSTER_BY_LIST, true, false,
 					R.string.select_album_style_three, R.string.group_by_album),
-			new ActionItem(FilterUtils.CLUSTER_BY_LOCATION, true, false,
-					R.string.locations, R.string.location,
-					R.string.group_by_location),
+//			new ActionItem(FilterUtils.CLUSTER_BY_LOCATION, true, false,
+//					R.string.locations, R.string.location,
+//					R.string.group_by_location),
 			new ActionItem(FilterUtils.CLUSTER_BY_TIME, true, false,
-					R.string.times, R.string.time, R.string.group_by_time),
-			new ActionItem(FilterUtils.CLUSTER_BY_FACE, true, false,
-					R.string.people, R.string.group_by_faces),
-			new ActionItem(FilterUtils.CLUSTER_BY_TAG, true, false,
-					R.string.tags, R.string.group_by_tags) };
+					R.string.times, R.string.time, R.string.group_by_time)};
+//			new ActionItem(FilterUtils.CLUSTER_BY_FACE, true, false,
+//					R.string.people, R.string.group_by_faces),
+//			new ActionItem(FilterUtils.CLUSTER_BY_TAG, true, false,
+//					R.string.tags, R.string.group_by_tags) };
 
 	private class ClusterAdapter extends BaseAdapter {
 
