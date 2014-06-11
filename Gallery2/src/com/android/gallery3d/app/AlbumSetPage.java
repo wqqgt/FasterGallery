@@ -31,10 +31,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.gallery3d.R;
+import com.android.gallery3d.app.GalleryActionBar.ClusterRunner;
 import com.android.gallery3d.common.Utils;
 import com.android.gallery3d.data.DataManager;
 import com.android.gallery3d.data.MediaDetails;
@@ -573,8 +575,10 @@ public class AlbumSetPage extends ActivityState implements
 			mActionBar.setTitle(R.string.select_album);
 		} else {
 			inflater.inflate(R.menu.albumset, menu);
-			boolean wasShowingClusterMenu = mShowClusterMenu;
-			mShowClusterMenu = !inAlbum;
+//			boolean wasShowingClusterMenu = mShowClusterMenu;
+//			mShowClusterMenu = !inAlbum;
+			boolean wasShowingClusterMenu = true;
+			mShowClusterMenu = false;
 			boolean selectAlbums = !inAlbum
 					&& mActionBar.getClusterTypeAction() == FilterUtils.CLUSTER_BY_ALBUM;
 			MenuItem selectItem = menu.findItem(R.id.action_select);
@@ -597,6 +601,7 @@ public class AlbumSetPage extends ActivityState implements
 
 			mActionBar.setTitle(mTitle);
 			mActionBar.setSubtitle(mSubtitle);
+			
 			if (mShowClusterMenu != wasShowingClusterMenu) {
 				if (mShowClusterMenu) {
 					mActionBar.enableClusterMenu(mSelectedAction, this);
@@ -635,6 +640,11 @@ public class AlbumSetPage extends ActivityState implements
 			return true;
 		case R.id.action_camera: {
 			GalleryUtils.startCameraActivity(activity);
+			return true;
+		}
+		case R.id.action_select_view: {
+			View customview = activity.findViewById(R.id.action_select_view);
+			popupSelectMenu(activity, customview);
 			return true;
 		}
 		case R.id.action_manage_offline: {
@@ -798,4 +808,36 @@ public class AlbumSetPage extends ActivityState implements
 			}
 		}
 	}
+	
+	private ClusterRunner getClusterRunner() {
+		return this;
+	}
+	
+	private int getIndexByMenuItemId(int item) {
+		int iret = 0;
+		if (item == R.id.action_cluster_album) {
+			iret = 0;
+		} else if (item == R.id.action_cluster_by_cascading) {
+			iret = 1;
+		} else if (item == R.id.action_cluster_by_list) {
+			iret = 2;
+		} else if (item == R.id.action_cluster_time) {
+			iret = 3;
+		}
+		return iret;
+	}
+	private void popupSelectMenu(Activity ac, View v) {
+		final PopupMenu popupmenu = new PopupMenu(ac,v);
+		popupmenu.inflate(R.menu.albumsetpopup);
+		popupmenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				mActionBar.doClusterByPopupMenu(getIndexByMenuItemId(item.getItemId()), 
+						getClusterRunner());
+				return false;
+			}
+		});
+		popupmenu.show();
+	}
+	
 }

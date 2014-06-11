@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_cluster_album"
+            android:title="@string/albums" />
+    <item android:id="@+id/action_cluster_by_cascading"
+            android:title="@string/select_album_style_two" />
+    <item android:id="@+id/action_cluster_by_list"
+            android:title="@string/select_album_style_three" />
+    <item android:id="@+id/action_cluster_time"
+            android:title="@string/time" />
+</menu>

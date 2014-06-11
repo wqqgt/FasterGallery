@@ -412,6 +412,26 @@ public class GalleryActionBar implements OnNavigationListener {
 		}
 		return false;
 	}
+	
+	public void doClusterByPopupMenu(int itemPosition, ClusterRunner runner) {
+		if (itemPosition != mCurrentIndex && runner != null
+				|| mAlbumModeListener != null) {
+			// Need to lock rendering when operations invoked by system UI (main
+			// thread) are
+			// modifying slot data used in GL thread for rendering.
+			mActivity.getGLRoot().lockRenderThread();
+			try {
+				if (mAlbumModeListener != null) {
+					mAlbumModeListener.onAlbumModeSelected(itemPosition);
+				} else {
+					runner.doCluster(sClusterItems[itemPosition].action);
+				}
+				mCurrentIndex = itemPosition;
+			} finally {
+				mActivity.getGLRoot().unlockRenderThread();
+			}
+		}
+	}
 
 	private Menu mActionBarMenu;
 	private ShareActionProvider mSharePanoramaActionProvider;
