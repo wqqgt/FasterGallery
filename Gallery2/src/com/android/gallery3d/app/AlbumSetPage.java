@@ -599,6 +599,9 @@ public class AlbumSetPage extends ActivityState implements
 			if (helpIntent != null)
 				helpItem.setIntent(helpIntent);
 
+			if (mTitle == null) {
+				mTitle = mActivity.getString(R.string.app_name);
+			}
 			mActionBar.setTitle(mTitle);
 			mActionBar.setSubtitle(mSubtitle);
 			
