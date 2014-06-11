@@ -5,7 +5,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         package="com.android.gallery3d">
 
-    <original-package android:name="com.android.gallery3d" />
+    <original-package android:name="com.android.fastergallery" />
 
     <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="17" />
 
