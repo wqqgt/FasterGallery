@@ -143,7 +143,7 @@ public abstract class PhotoPage extends ActivityState implements
 	private GalleryActionBar mActionBar;
 	private boolean mIsMenuVisible;
 	private boolean mHaveImageEditor;
-	private PhotoPageBottomControls mBottomControls;
+//	private PhotoPageBottomControls mBottomControls;
 	private PhotoPageProgressBar mProgressBar;
 	private MediaItem mCurrentPhoto = null;
 	private MenuExecutor mMenuExecutor;
@@ -301,14 +301,14 @@ public abstract class PhotoPage extends ActivityState implements
 					hideBars();
 					break;
 				}
-				case MSG_REFRESH_BOTTOM_CONTROLS: {
-					if (mCurrentPhoto == message.obj && mBottomControls != null) {
-						mIsPanorama = message.arg1 == 1;
-						mIsPanorama360 = message.arg2 == 1;
-						mBottomControls.refresh();
-					}
-					break;
-				}
+//				case MSG_REFRESH_BOTTOM_CONTROLS: {
+//					if (mCurrentPhoto == message.obj && mBottomControls != null) {
+//						mIsPanorama = message.arg1 == 1;
+//						mIsPanorama360 = message.arg2 == 1;
+//						mBottomControls.refresh();
+//					}
+//					break;
+//				}
 				case MSG_ON_FULL_SCREEN_CHANGED: {
 					if (mAppBridge != null) {
 						mAppBridge.onFullScreenChanged(message.arg1 == 1);
@@ -594,10 +594,10 @@ public abstract class PhotoPage extends ActivityState implements
 				.findViewById(mAppBridge != null ? R.id.content
 						: R.id.gallery_root);
 		if (galleryRoot != null) {
-			if (mSecureAlbum == null) {
-				mBottomControls = new PhotoPageBottomControls(this, mActivity,
-						galleryRoot);
-			}
+//			if (mSecureAlbum == null) {
+//				mBottomControls = new PhotoPageBottomControls(this, mActivity,
+//						galleryRoot);
+//			}
 			StitchingProgressManager progressManager = mApplication
 					.getStitchingProgressManager();
 			if (progressManager != null) {
@@ -1538,8 +1538,8 @@ public abstract class PhotoPage extends ActivityState implements
 			mScreenNailItem = null;
 		}
 		mActivity.getGLRoot().setOrientationSource(null);
-		if (mBottomControls != null)
-			mBottomControls.cleanup();
+//		if (mBottomControls != null)
+//			mBottomControls.cleanup();
 
 		// Remove all pending messages.
 		mHandler.removeCallbacksAndMessages(null);
@@ -1573,16 +1573,16 @@ public abstract class PhotoPage extends ActivityState implements
 
 	@Override
 	public void refreshBottomControlsWhenReady() {
-		if (mBottomControls == null) {
-			return;
-		}
-		MediaObject currentPhoto = mCurrentPhoto;
-		if (currentPhoto == null) {
-			mHandler.obtainMessage(MSG_REFRESH_BOTTOM_CONTROLS, 0, 0,
-					currentPhoto).sendToTarget();
-		} else {
-			currentPhoto.getPanoramaSupport(mRefreshBottomControlsCallback);
-		}
+//		if (mBottomControls == null) {
+//			return;
+//		}
+//		MediaObject currentPhoto = mCurrentPhoto;
+//		if (currentPhoto == null) {
+//			mHandler.obtainMessage(MSG_REFRESH_BOTTOM_CONTROLS, 0, 0,
+//					currentPhoto).sendToTarget();
+//		} else {
+//			currentPhoto.getPanoramaSupport(mRefreshBottomControlsCallback);
+//		}
 	}
 
 	private void updatePanoramaUI(boolean isPanorama360) {
