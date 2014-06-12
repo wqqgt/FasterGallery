@@ -106,6 +106,9 @@
 
     <!-- Details dialog "OK" button. Dismisses dialog. -->
     <string name="delete">Delete</string>
+    <string name="hide">Hide</string>
+    <string name="rename">Rename</string>
+    <string name="show_hide">ShowAllFile</string>
     <!-- String Delete the selected media item(s) [CHAR LIMIT=50] -->
     <plurals name="delete_selection">
         <item quantity="one">Delete selected item?</item>

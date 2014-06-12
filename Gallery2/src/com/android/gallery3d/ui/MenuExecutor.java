@@ -188,6 +188,9 @@ public class MenuExecutor {
 		boolean supportInfo = (supported & MediaObject.SUPPORT_INFO) != 0;
 
 		setMenuItemVisible(menu, R.id.action_delete, supportDelete);
+		setMenuItemVisible(menu, R.id.action_hide, supportDelete);
+		setMenuItemVisible(menu, R.id.action_show_hide, supportDelete);
+		setMenuItemVisible(menu, R.id.action_rename, supportDelete);
 		setMenuItemVisible(menu, R.id.action_rotate_ccw, supportRotate);
 		setMenuItemVisible(menu, R.id.action_rotate_cw, supportRotate);
 		setMenuItemVisible(menu, R.id.action_crop, supportCrop);
@@ -281,6 +284,15 @@ public class MenuExecutor {
 			break;
 		case R.id.action_show_on_map:
 			title = R.string.show_on_map;
+			break;
+		case R.id.action_rename:
+			title = R.string.rename;
+			break;
+		case R.id.action_hide:
+			title = R.string.hide;
+			break;
+		case R.id.action_show_hide:
+			title = R.string.show_hide;
 			break;
 		default:
 			return;

@@ -101,6 +101,18 @@ public abstract class MediaObject {
 		throw new UnsupportedOperationException();
 	}
 
+	public void hide() {
+		throw new UnsupportedOperationException();
+	}
+	
+	public void showHide() {
+		throw new UnsupportedOperationException();
+	}
+	
+	public void rename() {
+		throw new UnsupportedOperationException();
+	}
+	
 	public void rotate(int degrees) {
 		throw new UnsupportedOperationException();
 	}

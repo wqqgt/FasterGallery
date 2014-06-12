@@ -281,6 +281,21 @@ public class LocalImage extends LocalMediaItem {
 		mApplication.getContentResolver().delete(baseUri, "_id=?",
 				new String[] { String.valueOf(id) });
 	}
+	
+	@Override
+	public void hide() {
+		GalleryUtils.assertNotInRenderThread();
+	}
+	
+	@Override
+	public void showHide() {
+		GalleryUtils.assertNotInRenderThread();
+	}
+	
+	@Override
+	public void rename() {
+		GalleryUtils.assertNotInRenderThread();
+	}
 
 	@Override
 	public void rotate(int degrees) {

@@ -440,4 +440,7 @@
     <string name="select_album_style_one">网格</string>
     <string name="select_album_style_two">层叠</string>
     <string name="select_album_style_three">列表</string>
+    <string name="show_hide">显示隐藏</string>
+    <string name="hide">隐藏</string>
+    <string name="rename">重命名</string>
 </resources>

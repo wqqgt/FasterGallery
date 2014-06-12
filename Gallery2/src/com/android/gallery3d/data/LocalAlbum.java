@@ -272,6 +272,21 @@ public class LocalAlbum extends MediaSet {
 		mResolver.delete(mBaseUri, mWhereClause,
 				new String[] { String.valueOf(mBucketId) });
 	}
+	
+	@Override
+	public void hide() {
+		GalleryUtils.assertNotInRenderThread();
+	}
+	
+	@Override
+	public void showHide() {
+		GalleryUtils.assertNotInRenderThread();
+	}
+	
+	@Override
+	public void rename() {
+		GalleryUtils.assertNotInRenderThread();
+	}
 
 	@Override
 	public boolean isLeafAlbum() {
