@@ -16,10 +16,11 @@
 
 package com.android.photos.data;
 
+import com.android.photos.data.Pools.Pool;
+
 import android.graphics.Bitmap;
 import android.util.SparseArray;
 
-import android.util.Pools.Pool;
 
 public class SparseArrayBitmapPool {
 

@@ -21,8 +21,6 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.util.Pools.SimplePool;
-import android.util.Pools.SynchronizedPool;
 
 import com.android.gallery3d.R;
 import com.android.gallery3d.common.BitmapUtils;
@@ -32,6 +30,8 @@ import com.android.gallery3d.data.MediaItem;
 import com.android.gallery3d.util.ThreadPool.CancelListener;
 import com.android.gallery3d.util.ThreadPool.JobContext;
 import com.android.photos.data.MediaRetriever.MediaSize;
+import com.android.photos.data.Pools.SimplePool;
+import com.android.photos.data.Pools.SynchronizedPool;
 
 import java.io.File;
 import java.io.FileOutputStream;

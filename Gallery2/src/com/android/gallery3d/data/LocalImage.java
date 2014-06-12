@@ -293,7 +293,7 @@ public class LocalImage extends LocalMediaItem {
 	}
 	
 	@Override
-	public void rename() {
+	public void rename(String newName) {
 		GalleryUtils.assertNotInRenderThread();
 	}
 

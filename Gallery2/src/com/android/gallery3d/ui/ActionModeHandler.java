@@ -18,7 +18,11 @@ package com.android.gallery3d.ui;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnDismissListener;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Handler;
@@ -29,6 +33,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.ShareActionProvider;
 import android.widget.ShareActionProvider.OnShareTargetSelectedListener;
 
@@ -162,6 +168,7 @@ public class ActionModeHandler implements Callback,
 
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+		showRenameDialog();
 		GLRoot root = mActivity.getGLRoot();
 		root.lockRenderThread();
 		try {
@@ -529,4 +536,25 @@ public class ActionModeHandler implements Callback,
 			updateSupportedOperation();
 		mMenuExecutor.resume();
 	}
+	
+	public void showRenameDialog() {
+	    AlertDialog.Builder build = new AlertDialog.Builder(mActivity)
+	    .setTitle(R.string.rename)
+	    .setView(new EditText(mActivity))
+	    .setPositiveButton(R.string.ok, new AlertDialog.OnClickListener() {			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+			}
+		})
+		.setNegativeButton(R.string.cancel, new AlertDialog.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	    build.show();
+	}
+
 }

@@ -109,7 +109,7 @@ public abstract class MediaObject {
 		throw new UnsupportedOperationException();
 	}
 	
-	public void rename() {
+	public void rename(String newName) {
 		throw new UnsupportedOperationException();
 	}
 	

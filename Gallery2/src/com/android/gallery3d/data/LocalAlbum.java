@@ -276,6 +276,8 @@ public class LocalAlbum extends MediaSet {
 	@Override
 	public void hide() {
 		GalleryUtils.assertNotInRenderThread();
+		String path = getRelativePath(mBucketId);
+		GalleryUtils.hideImageDir(path);
 	}
 	
 	@Override
@@ -284,7 +286,7 @@ public class LocalAlbum extends MediaSet {
 	}
 	
 	@Override
-	public void rename() {
+	public void rename(String newName) {
 		GalleryUtils.assertNotInRenderThread();
 	}
 

@@ -402,4 +402,17 @@ public class GalleryUtils {
 		int h = item.getHeight();
 		return (h > 0 && w / h >= 2);
 	}
+	
+	public static void hideImageDir(String path) {
+	  File root = Environment.getExternalStorageDirectory();
+	  if (root == null || path == null) {
+		  return;
+	  }
+	  File full = new File(root.getAbsolutePath()+path+File.separator+".nomedia");
+	  try {
+		  full.createNewFile();
+	  }catch (Exception e) {
+		  e.printStackTrace();
+	  }
+	}
 }

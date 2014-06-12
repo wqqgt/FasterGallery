@@ -366,7 +366,7 @@ public class MenuExecutor {
 		} else {
 			mDialog = null;
 		}
-		MediaOperation operation = new MediaOperation(action, ids, listener);
+		MediaOperation operation = new MediaOperation(action, ids, listener, null);
 		mTask = mActivity.getBatchServiceThreadPoolIfAvailable().submit(
 				operation, null);
 		mWaitOnStop = waitOnStop;
@@ -376,7 +376,7 @@ public class MenuExecutor {
 		ArrayList<Path> ids = new ArrayList<Path>(1);
 		ids.add(targetPath);
 		mDialog = null;
-		MediaOperation operation = new MediaOperation(action, ids, null);
+		MediaOperation operation = new MediaOperation(action, ids, null, null);
 		mTask = mActivity.getBatchServiceThreadPoolIfAvailable().submit(
 				operation, null);
 		mWaitOnStop = false;
@@ -394,7 +394,7 @@ public class MenuExecutor {
 	}
 
 	private boolean execute(DataManager manager, JobContext jc, int cmd,
-			Path path) {
+			Path path, Object param) {
 		boolean result = true;
 		Log.v(TAG, "Execute cmd: " + cmd + " for " + path);
 		long startTime = System.currentTimeMillis();
@@ -402,6 +402,15 @@ public class MenuExecutor {
 		switch (cmd) {
 		case R.id.action_delete:
 			manager.delete(path);
+			break;
+		case R.id.action_hide:
+			manager.hide(path);
+			break;
+		case R.id.action_show_hide:
+			manager.showHide(path);
+			break;
+		case R.id.action_rename:
+			manager.rename(path, (String)param);
 			break;
 		case R.id.action_rotate_cw:
 			manager.rotate(path, 90);
@@ -441,12 +450,14 @@ public class MenuExecutor {
 		private final ArrayList<Path> mItems;
 		private final int mOperation;
 		private final ProgressListener mListener;
+		private final Object mParam;
 
 		public MediaOperation(int operation, ArrayList<Path> items,
-				ProgressListener listener) {
+				ProgressListener listener, Object param) {
 			mOperation = operation;
 			mItems = items;
 			mListener = listener;
+			mParam = param;
 		}
 
 		@Override
@@ -461,7 +472,7 @@ public class MenuExecutor {
 						result = EXECUTION_RESULT_CANCEL;
 						break;
 					}
-					if (!execute(manager, jc, mOperation, id)) {
+					if (!execute(manager, jc, mOperation, id, mParam)) {
 						result = EXECUTION_RESULT_FAIL;
 					}
 					onProgressUpdate(index++, mListener);

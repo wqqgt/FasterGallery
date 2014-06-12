@@ -256,6 +256,18 @@ public class DataManager implements StitchingChangeListener {
 	public void delete(Path path) {
 		getMediaObject(path).delete();
 	}
+	
+	public void hide(Path path) {
+		getMediaObject(path).hide();
+	}
+	
+	public void showHide(Path path) {
+		getMediaObject(path).showHide();
+	}
+	
+	public void rename(Path path, String newName) {
+		getMediaObject(path).rename(newName);
+	}
 
 	public void rotate(Path path, int degrees) {
 		getMediaObject(path).rotate(degrees);
