@@ -3,13 +3,13 @@
 <manifest android:versionCode="40012"
         android:versionName="1.1.40012"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.android.gallery3d">
+        package="com.android.fastergallery">
 
     <original-package android:name="com.android.fastergallery" />
 
     <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="17" />
 
-    <permission android:name="com.android.gallery3d.permission.GALLERY_PROVIDER"
+    <permission android:name="com.android.fastergallery.permission.GALLERY_PROVIDER"
             android:protectionLevel="signatureOrSystem" />
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -30,14 +30,14 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
-    <uses-permission android:name="com.android.gallery3d.permission.GALLERY_PROVIDER" />
+    <uses-permission android:name="com.android.fastergallery.permission.GALLERY_PROVIDER" />
 
     <supports-screens android:smallScreens="false"
             android:normalScreens="true" android:largeScreens="true"
             android:anyDensity="true" />
 
     <application android:icon="@mipmap/ic_launcher_gallery" android:label="@string/app_name"
-            android:name="com.android.gallery3d.app.GalleryAppImpl"
+            android:name="com.android.fastergallery.app.GalleryAppImpl"
             android:theme="@style/Theme.Gallery"
             android:logo="@mipmap/ic_launcher_gallery"
             android:hardwareAccelerated="true"
@@ -47,7 +47,7 @@
         <uses-library android:name="com.google.android.media.effects" android:required="false" />
         <meta-data android:name="com.google.android.backup.api_key"
                 android:value="AEdPqrEAAAAIRIXquXawbz6duuuCIUAZ_YJv1zbFMMcjZ0NoVw" />
-        <activity android:name="com.android.gallery3d.app.MovieActivity"
+        <activity android:name="com.android.fastergallery.app.MovieActivity"
                 android:label="@string/movie_view_label"
                 android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
@@ -87,7 +87,7 @@
              </intent-filter>
         </activity>
 
-        <activity android:name="com.android.gallery3d.app.Gallery" android:label="@string/app_name"
+        <activity android:name="com.android.fastergallery.app.Gallery" android:label="@string/app_name"
                 android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -166,7 +166,7 @@
         <!-- we add this activity-alias for shortcut backward compatibility -->
         <!-- Note: The alias must put after the target activity -->
         <activity-alias android:name="com.cooliris.media.Gallery"
-                android:targetActivity="com.android.gallery3d.app.Gallery"
+                android:targetActivity="com.android.fastergallery.app.Gallery"
                 android:configChanges="keyboardHidden|orientation|screenSize"
                 android:label="@string/app_name">
             <intent-filter>
@@ -174,20 +174,7 @@
             </intent-filter>
         </activity-alias>
 
-         <!-- This activity receives USB_DEVICE_ATTACHED intents and allows importing
-         media from attached MTP devices, like cameras and camera phones -->
-        <activity android:launchMode="singleInstance"
-            android:taskAffinity="" android:name="com.android.gallery3d.ingest.IngestActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-            </intent-filter>
-            <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-                android:resource="@xml/device_filter" />
-        </activity>
-
-        <activity android:name="com.android.gallery3d.app.Wallpaper"
+        <activity android:name="com.android.fastergallery.app.Wallpaper"
                 android:configChanges="keyboardHidden|orientation|screenSize"
                 android:theme="@style/android:Theme.Translucent.NoTitleBar">
             <intent-filter android:label="@string/camera_setas_wallpaper">
@@ -202,40 +189,40 @@
             <meta-data android:name="android.wallpaper.preview"
                     android:resource="@xml/wallpaper_picker_preview" />
         </activity>
-        <activity android:name="com.android.gallery3d.app.TrimVideo"
+        <activity android:name="com.android.fastergallery.app.TrimVideo"
                 android:label="@string/trim_label">
         </activity>
 
         <uses-library android:name="com.google.android.media.effects"
                 android:required="false" />
 
-        <activity android:name="com.android.gallery3d.settings.GallerySettings"
+        <activity android:name="com.android.fastergallery.settings.GallerySettings"
                 android:theme="@style/Theme.Gallery"
                 android:configChanges="orientation|keyboardHidden|screenSize" />
 
-        <provider android:name="com.android.gallery3d.provider.GalleryProvider"
+        <provider android:name="com.android.fastergallery.provider.GalleryProvider"
                 android:syncable="false"
                 android:grantUriPermissions="true"
                 android:exported="true"
-                android:permission="com.android.gallery3d.permission.GALLERY_PROVIDER"
-                android:authorities="com.android.gallery3d.provider" />
+                android:permission="com.android.fastergallery.permission.GALLERY_PROVIDER"
+                android:authorities="com.android.fastergallery.provider" />
         <provider
-                android:name="com.android.photos.data.PhotoProvider"
-                android:authorities="com.android.gallery3d.photoprovider"
+                android:name="com.android.fasterphotos.data.PhotoProvider"
+                android:authorities="com.android.fastergallery.photoprovider"
                 android:syncable="false"
                 android:exported="false"/>
-        <activity android:name="com.android.gallery3d.gadget.WidgetClickHandler" />
-        <activity android:name="com.android.gallery3d.app.DialogPicker"
+        <activity android:name="com.android.fastergallery.gadget.WidgetClickHandler" />
+        <activity android:name="com.android.fastergallery.app.DialogPicker"
                 android:configChanges="keyboardHidden|orientation|screenSize"
                 android:theme="@style/DialogPickerTheme"/>
-        <activity android:name="com.android.gallery3d.app.AlbumPicker"
+        <activity android:name="com.android.fastergallery.app.AlbumPicker"
                 android:configChanges="keyboardHidden|orientation|screenSize"
                 android:theme="@style/DialogPickerTheme"/>
-        <activity android:name="com.android.gallery3d.gadget.WidgetTypeChooser"
+        <activity android:name="com.android.fastergallery.gadget.WidgetTypeChooser"
                 android:configChanges="keyboardHidden|orientation|screenSize"
                 android:theme="@style/Theme.Gallery.Dialog"/>
 
-        <receiver android:name="com.android.gallery3d.gadget.PhotoAppWidgetProvider"
+        <receiver android:name="com.android.fastergallery.gadget.PhotoAppWidgetProvider"
                 android:label="@string/appwidget_title">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -243,7 +230,7 @@
             <meta-data android:name="android.appwidget.provider"
                     android:resource="@xml/widget_info" />
         </receiver>
-        <receiver android:name="com.android.gallery3d.app.PackagesMonitor">
+        <receiver android:name="com.android.fastergallery.app.PackagesMonitor">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED"/>
                 <action android:name="android.intent.action.PACKAGE_REMOVED"/>
@@ -251,7 +238,7 @@
                 <data android:scheme="package"/>
             </intent-filter>
         </receiver>
-        <service android:name="com.android.gallery3d.app.PackagesMonitor$AsyncService"/>
+        <service android:name="com.android.fastergallery.app.PackagesMonitor$AsyncService"/>
         <receiver android:name="com.android.camera.CameraButtonIntentReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.CAMERA_BUTTON"/>
@@ -262,16 +249,16 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <service android:name="com.android.gallery3d.gadget.WidgetService"
+        <service android:name="com.android.fastergallery.gadget.WidgetService"
                 android:permission="android.permission.BIND_REMOTEVIEWS"/>
-        <activity android:name="com.android.gallery3d.gadget.WidgetConfigure"
+        <activity android:name="com.android.fastergallery.gadget.WidgetConfigure"
                 android:configChanges="keyboardHidden|orientation|screenSize"
                 android:theme="@style/android:Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-        <service android:name="com.android.gallery3d.app.BatchService" />
+        <service android:name="com.android.fastergallery.app.BatchService" />
         <service android:name="com.android.camera.MediaSaveService" />
     </application>
 </manifest>
