@@ -28,6 +28,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import com.android.gallery3d.R;
 import com.android.gallery3d.app.AbstractGalleryActivity;
@@ -341,10 +342,7 @@ public class MenuExecutor {
 				listener.onConfirmDialogShown();
 			ConfirmDialogListener cdl = new ConfirmDialogListener(action,
 					listener);
-			new AlertDialog.Builder(mActivity.getAndroidContext())
-					.setMessage(confirmMsg).setOnCancelListener(cdl)
-					.setPositiveButton(R.string.ok, cdl)
-					.setNegativeButton(R.string.cancel, cdl).create().show();
+			showAlertDialog(confirmMsg, cdl, action);
 		} else {
 			onMenuClicked(action, listener);
 		}
@@ -484,6 +482,21 @@ public class MenuExecutor {
 				onProgressComplete(result, mListener);
 			}
 			return null;
+		}
+	}
+	
+	private void showAlertDialog(String confirmMsg, ConfirmDialogListener cdl, int action) {
+		if (action == R.id.action_rename) {
+			new AlertDialog.Builder(mActivity.getAndroidContext())
+					.setView(new EditText(mActivity)).setMessage(confirmMsg)
+					.setOnCancelListener(cdl)
+					.setPositiveButton(R.string.ok, cdl)
+					.setNegativeButton(R.string.cancel, cdl).create().show();
+		} else {
+			new AlertDialog.Builder(mActivity.getAndroidContext())
+					.setMessage(confirmMsg).setOnCancelListener(cdl)
+					.setPositiveButton(R.string.ok, cdl)
+					.setNegativeButton(R.string.cancel, cdl).create().show();
 		}
 	}
 }

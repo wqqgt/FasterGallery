@@ -168,7 +168,6 @@ public class ActionModeHandler implements Callback,
 
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-		showRenameDialog();
 		GLRoot root = mActivity.getGLRoot();
 		root.lockRenderThread();
 		try {
@@ -199,6 +198,8 @@ public class ActionModeHandler implements Callback,
 							mActivity, "Gallery Delete Progress Listener");
 				}
 				listener = mDeleteProgressListener;
+			} else if (action == R.id.action_rename) {
+				confirmMsg = mActivity.getResources().getString(R.string.rename);
 			}
 			mMenuExecutor.onMenuClicked(item, confirmMsg, listener);
 		} finally {
@@ -536,25 +537,4 @@ public class ActionModeHandler implements Callback,
 			updateSupportedOperation();
 		mMenuExecutor.resume();
 	}
-	
-	public void showRenameDialog() {
-	    AlertDialog.Builder build = new AlertDialog.Builder(mActivity)
-	    .setTitle(R.string.rename)
-	    .setView(new EditText(mActivity))
-	    .setPositiveButton(R.string.ok, new AlertDialog.OnClickListener() {			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				
-			}
-		})
-		.setNegativeButton(R.string.cancel, new AlertDialog.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-	    build.show();
-	}
-
 }
