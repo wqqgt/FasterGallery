@@ -417,6 +417,8 @@ public class SlotView extends GLView {
 
 		public int rowsLand = -1;
 		public int rowsPort = -1;
+		public int colsLand = -1;
+		public int colsPort = -1;
 		public int slotGap = -1;
 	}
 

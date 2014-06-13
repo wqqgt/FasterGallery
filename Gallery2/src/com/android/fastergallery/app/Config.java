@@ -56,6 +56,8 @@ final class Config {
 			slotViewSpec = new SlotView.Spec();
 			slotViewSpec.rowsLand = r.getInteger(R.integer.albumset_rows_land);
 			slotViewSpec.rowsPort = r.getInteger(R.integer.albumset_rows_port);
+			slotViewSpec.colsLand = r.getInteger(R.integer.albumset_cols_land);
+			slotViewSpec.colsPort = r.getInteger(R.integer.albumset_cols_port);
 			slotViewSpec.slotGap = r
 					.getDimensionPixelSize(R.dimen.albumset_slot_gap);
 			slotViewSpec.slotHeightAdditional = 0;
@@ -122,18 +124,26 @@ final class Config {
 			case FilterUtils.CLUSTER_BY_ALBUM:
 				slotTypeViewSpec.rowsLand = r.getInteger(R.integer.albumset_rows_land);
 				slotTypeViewSpec.rowsPort = r.getInteger(R.integer.albumset_rows_port);
+				slotTypeViewSpec.colsLand = r.getInteger(R.integer.albumset_cols_land);
+				slotTypeViewSpec.colsPort = r.getInteger(R.integer.albumset_cols_port);
 				break;
 			case FilterUtils.CLUSTER_BY_CASCADING:
 				slotTypeViewSpec.rowsLand = r.getInteger(R.integer.albumset_rows_land);
 				slotTypeViewSpec.rowsPort = r.getInteger(R.integer.albumset_rows_port);
+				slotTypeViewSpec.colsLand = r.getInteger(R.integer.albumset_cols_land);
+				slotTypeViewSpec.colsPort = r.getInteger(R.integer.albumset_cols_port);
 				break;
 			case FilterUtils.CLUSTER_BY_LIST:
 				slotTypeViewSpec.rowsLand = r.getInteger(R.integer.albumset_list_rows_land);
 				slotTypeViewSpec.rowsPort = r.getInteger(R.integer.albumset_list_rows_port);
+				slotTypeViewSpec.colsLand = r.getInteger(R.integer.albumset_cols_land);
+				slotTypeViewSpec.colsPort = r.getInteger(R.integer.albumset_cols_port);
 				break;
 			default:
 				slotTypeViewSpec.rowsLand = r.getInteger(R.integer.albumset_rows_land);
 				slotTypeViewSpec.rowsPort = r.getInteger(R.integer.albumset_rows_port);
+				slotTypeViewSpec.colsLand = r.getInteger(R.integer.albumset_cols_land);
+				slotTypeViewSpec.colsPort = r.getInteger(R.integer.albumset_cols_port);
 				break;
 			}
 		}

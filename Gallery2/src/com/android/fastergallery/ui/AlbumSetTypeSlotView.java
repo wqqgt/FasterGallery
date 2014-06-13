@@ -412,6 +412,8 @@ public class AlbumSetTypeSlotView extends GLView {
 
 		public int rowsLand = -1;
 		public int rowsPort = -1;
+		public int colsLand = -1;
+		public int colsPort = -1;
 		public int slotGap = -1;
 	}
 
@@ -525,11 +527,16 @@ public class AlbumSetTypeSlotView extends GLView {
 				mSlotGap = 0;
 				mSlotWidth = mSpec.slotWidth;
 				mSlotHeight = mSpec.slotHeight;
+			} else if (FilterUtils.CLUSTER_BY_LIST == mViewType) {
+			    int rows = (mWidth > mHeight) ? mSpec.rowsLand : mSpec.rowsPort;
+                mSlotGap = mSpec.slotGap;
+                mSlotHeight = Math.max(1, (mHeight - (rows - 1) * mSlotGap)/ rows);
+                mSlotWidth = calculateWidth(mViewType);
 			} else {
-				int rows = (mWidth > mHeight) ? mSpec.rowsLand : mSpec.rowsPort;
-				mSlotGap = mSpec.slotGap;
-				mSlotHeight = Math.max(1, (mHeight - (rows - 1) * mSlotGap)/ rows);
-				mSlotWidth = calculateWidth(mViewType);
+			    int cols = (mWidth > mHeight) ? mSpec.colsLand : mSpec.colsPort;
+			    mSlotGap = mSpec.slotGap;
+			    mSlotWidth = Math.max(1, (mWidth - (cols - 1) * mSlotGap) / cols);
+			    mSlotHeight = calculateHeight(mViewType);
 			}
 
 			if (mRenderer != null) {
@@ -567,6 +574,24 @@ public class AlbumSetTypeSlotView extends GLView {
 			}
 			return width;
 		}
+		
+		private int calculateHeight(int type) {
+            int height = 0;
+            switch(type) {
+            case FilterUtils.CLUSTER_BY_ALBUM:
+                height = mSlotWidth - mSpec.slotHeightAdditional;
+                break;
+            case FilterUtils.CLUSTER_BY_CASCADING:
+                height = mSlotWidth - mSpec.slotHeightAdditional;
+                break;
+            case FilterUtils.CLUSTER_BY_LIST:
+                height = mWidth;
+                break;
+            default:
+                height = mSlotWidth - mSpec.slotHeightAdditional;
+            }
+            return height;
+        }
 
 		private void updateVisibleSlotRange() {
 			int position = mScrollPosition;
