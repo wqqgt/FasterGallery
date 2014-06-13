@@ -22,8 +22,12 @@
     <!-- configuration for legacy album set page -->
     <integer name="albumset_rows_land">2</integer>
     <integer name="albumset_rows_port">3</integer>
+    <integer name="albumset_cols_land">3</integer>
+    <integer name="albumset_cols_port">2</integer>
     <integer name="albumset_list_rows_land">3</integer>
     <integer name="albumset_list_rows_port">5</integer>
+    <integer name="albumset_list_cols_land">1</integer>
+    <integer name="albumset_list_cols_port">1</integer>
     <dimen name="albumset_padding_top">7dp</dimen>
     <dimen name="albumset_padding_bottom">7dp</dimen>
     <dimen name="albumset_slot_gap">7dp</dimen>
