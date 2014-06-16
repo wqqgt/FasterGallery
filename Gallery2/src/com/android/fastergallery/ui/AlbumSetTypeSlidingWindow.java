@@ -17,10 +17,13 @@
 package com.android.fastergallery.ui;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.graphics.Bitmap;
 import android.os.Message;
+import android.text.TextUtils;
 
 import com.android.fastergallery.app.AbstractGalleryActivity;
 import com.android.fastergallery.app.AlbumSetDataLoader;
@@ -270,23 +273,29 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 				|| entry.sourceType != sourceType;
 	}
 
-	private String getTitle(MediaSet album) {
+	private String getLocalFilePath(MediaSet album) {
 	    if (album == null) {
 	        return "";
 	    }
 
-	    String title = "";
+	    String path = "";
 	    int viewType = AlbumSetTypeManager.get().getCurrentType();
-        if (FilterUtils.CLUSTER_BY_LIST == viewType) {
-            MediaItem item = album.getCoverMediaItem();
-            if (item != null && item instanceof LocalImage) {
-                title = new File(((LocalImage)item).filePath).getParent();
-            }
-        }else {
-            title = Utils.ensureNotNull(album.getName());
+        if (FilterUtils.CLUSTER_BY_LIST != viewType) {
+            return path;
         }
-        return title;
+
+        MediaItem item = album.getCoverMediaItem();
+        if (item != null && item instanceof LocalImage) {
+            path = new File(((LocalImage)item).filePath).getParent();
+        }
+        return path;
 	}
+
+	private String formatTime(long time) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date curDate = new Date(time);
+        return formatter.format(curDate);
+    }
 
 	private void updateAlbumSetEntry(AlbumSetEntry entry, int slotIndex) {
 		MediaSet album = mSource.getMediaSet(slotIndex);
@@ -299,12 +308,11 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 		entry.cacheStatus = identifyCacheStatus(album);
 		entry.setPath = (album == null) ? null : album.getPath();
 
-//		String title = (album == null) ? "" : Utils.ensureNotNull(album
-//				.getName());
-		String title = getTitle(album);
+		String title = (album == null) ? "" : Utils.ensureNotNull(album
+				.getName());
 		int sourceType = DataSourceType.identifySourceType(album);
 		if (isLabelChanged(entry, title, totalCount, sourceType)) {
-			entry.title = title;
+		    entry.title = title;
 			entry.totalCount = totalCount;
 			entry.sourceType = sourceType;
 			if (entry.labelLoader != null) {
@@ -312,9 +320,15 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 				entry.labelLoader = null;
 				entry.labelTexture = null;
 			}
+
 			if (album != null) {
-				entry.labelLoader = new AlbumLabelLoader(slotIndex, title,
-						totalCount, sourceType);
+				String albumPath = getLocalFilePath(album);
+				String albumDate = "";
+				if (!TextUtils.isEmpty(albumPath)) {
+				    albumDate = formatTime(new File(albumPath).lastModified());
+				}
+			    entry.labelLoader = new AlbumLabelLoader(slotIndex, title,
+						totalCount, sourceType, albumPath, albumDate);
 			}
 		}
 
@@ -587,13 +601,22 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 	private class AlbumLabelLoader extends BitmapLoader implements EntryUpdater {
 		private final int mSlotIndex;
 		private final String mTitle;
+		private final String mFilePath;
+		private final String mFileDate;
 		private final int mTotalCount;
 		private final int mSourceType;
 
 		public AlbumLabelLoader(int slotIndex, String title, int totalCount,
-				int sourceType) {
+                int sourceType) {
+		    this(slotIndex, title, totalCount, sourceType, "", "");
+        }
+
+		public AlbumLabelLoader(int slotIndex, String title, int totalCount,
+				int sourceType, String filePath, String fileDate) {
 			mSlotIndex = slotIndex;
 			mTitle = title;
+			mFilePath = filePath;
+			mFileDate = fileDate;
 			mTotalCount = totalCount;
 			mSourceType = sourceType;
 		}
@@ -603,7 +626,7 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 			return mThreadPool.submit(
 					mLabelMaker.requestLabel(mTitle,
 							"sdcard/test1", 
-							String.valueOf(mTotalCount), mSourceType,
+							String.valueOf(mTotalCount), mFilePath, mFileDate, mSourceType,
 							AlbumSetTypeManager.get().getCurrentType()), l);
 		}
 

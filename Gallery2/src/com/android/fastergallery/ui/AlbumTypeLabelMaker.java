@@ -21,7 +21,9 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Typeface;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -135,6 +137,11 @@ public class AlbumTypeLabelMaker {
 		return new AlbumLabelJob(title, path, count, sourceType, type);
 	}
 
+	public ThreadPool.Job<Bitmap> requestLabel(String title, String path, 
+            String count, String filePath, String fileDate, int sourceType, int type) {
+        return new AlbumLabelJob(title, path, count, filePath, fileDate, sourceType, type);
+    }
+
 	static void drawText(Canvas canvas, int x, int y, String text,
 			int lengthLimit, TextPaint p) {
 		// The TextPaint cannot be used concurrently
@@ -146,23 +153,34 @@ public class AlbumTypeLabelMaker {
 	}
 
 	private class AlbumLabelJob implements ThreadPool.Job<Bitmap> {
-		private final String mTitle;
+		private final String mFilePath;
+		private final String mFileDate;
+	    private final String mTitle;
 		private final String mCount;
 		private final int mSourceType;
 		private final int mViewType;
 
 		public AlbumLabelJob(String title, String path, String count, 
 				int sourceType, int type) {
-			mTitle = title;
-			mCount = count;
-			mSourceType = sourceType;
-			mViewType = type;
+			this(title, path, count, "", "", sourceType, type);
 		}
+
+		public AlbumLabelJob(String title, String path, String count, String filePath, String fileDate,
+                int sourceType, int type) {
+		    mFilePath = (null == filePath) ? "" : filePath;
+		    mFileDate = (null == fileDate) ? "" : fileDate;
+		    mTitle = title;
+            mCount = count;
+            mSourceType = sourceType;
+            mViewType = type;
+        }
 
 		@Override
 		public Bitmap run(JobContext jc) {
 			AlbumSetTypeSlotRenderer.LabelSpec s = mSpec;
 
+			String filePath = mFilePath;
+			String fileDate = mFileDate;
 			String title = mTitle;
 			String count = mCount;
 			Bitmap icon = getOverlayAlbumIcon(mSourceType);
@@ -180,7 +198,7 @@ public class AlbumTypeLabelMaker {
 				int borders = 2 * BORDER_SIZE;
 				int height = s.labelBackgroundHeight + borders;
 				if (mViewType == FilterUtils.CLUSTER_BY_LIST) {
-					height = s.labelBackgroundHeight + borders;
+				    height = mBitmapHeight;
 				}
 				bitmap = Bitmap.createBitmap(labelWidth + borders,
 						height, Config.ARGB_8888);
@@ -189,44 +207,96 @@ public class AlbumTypeLabelMaker {
 			Canvas canvas = new Canvas(bitmap);
 			canvas.clipRect(BORDER_SIZE, BORDER_SIZE, bitmap.getWidth()
 					- BORDER_SIZE, bitmap.getHeight() - BORDER_SIZE);
-			canvas.drawColor(mSpec.backgroundColor, PorterDuff.Mode.SRC);
-
 			canvas.translate(BORDER_SIZE, BORDER_SIZE);
 
-			// draw title
-			if (jc.isCancelled())
-				return null;
-			int x = s.leftMargin + s.iconSize;
-			// TODO: is the offset relevant in new reskin?
-			// int y = s.titleOffset;
-			int y = (s.labelBackgroundHeight - s.titleFontSize) / 2;
-			drawText(canvas, x, y, title, labelWidth - s.leftMargin - x
-					- s.titleRightMargin, mTitlePaint);
+			//列表模式特殊处理
+			if (FilterUtils.CLUSTER_BY_LIST == mViewType) {
+			    //清除上次画布内容
+                Paint paint = new Paint();
+                paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+                canvas.drawPaint(paint);
+                paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC));
 
-			// draw count
-			if (jc.isCancelled())
-				return null;
-			//
-			//x = x + (int)mTitlePaint.measureText(title)+s.titleRightMargin;
-			x = labelWidth - s.titleRightMargin;
-			y = (s.labelBackgroundHeight - s.countFontSize) / 2;
-			drawText(canvas, x, y, count, labelWidth - x, mCountPaint);
-
-			// draw the icon
-			if (icon != null) {
-				if (jc.isCancelled())
-					return null;
-				float scale = (float) s.iconSize / icon.getWidth();
-				canvas.translate(
-						s.leftMargin,
-						(s.labelBackgroundHeight - Math.round(scale
-								* icon.getHeight())) / 2f);
-				canvas.scale(scale, scale);
-				canvas.drawBitmap(icon, 0, 0, null);
+                //draw title
+                drawTitle(jc, s, canvas, title, labelWidth, 0);
+                //draw count
+                drawCount(jc, s, canvas, count, labelWidth);
+                //draw filePath
+                drawFilePath(jc, s, canvas, filePath, labelWidth);
+                //draw fileDate
+                drawFileDate(jc, s, canvas, fileDate, labelWidth);
+                return bitmap;
 			}
 
+
+			//draw background
+			canvas.drawColor(mSpec.backgroundColor, PorterDuff.Mode.SRC);
+			// draw title
+			drawTitle(jc, s, canvas, title, labelWidth, s.iconSize);
+			// draw count
+			drawCount(jc, s, canvas, count, labelWidth);
+			// draw the icon
+			drawIcon(jc, s, canvas, icon);
 			return bitmap;
 		}
+	}
+
+	private void drawTitle(JobContext jc, AlbumSetTypeSlotRenderer.LabelSpec s, Canvas canvas, String title, int labelWidth, int iconSize) {
+	    if (jc.isCancelled()) {
+            return ;
+	    }
+
+	    int x = s.leftMargin + iconSize;
+        int y = (s.labelBackgroundHeight - s.titleFontSize) / 2;
+        drawText(canvas, x, y, title, labelWidth - s.leftMargin - x
+                - s.titleRightMargin, mTitlePaint);
+	}
+
+	private void drawCount(JobContext jc, AlbumSetTypeSlotRenderer.LabelSpec s, Canvas canvas, String count, int labelWidth) {
+	    if (jc.isCancelled()) {
+            return ;
+        }
+
+        int x = labelWidth - s.titleRightMargin;
+        int y = (s.labelBackgroundHeight - s.countFontSize) / 2;
+        drawText(canvas, x, y, count, labelWidth - x, mCountPaint);
+	}
+
+	private void drawIcon(JobContext jc, AlbumSetTypeSlotRenderer.LabelSpec s, Canvas canvas, Bitmap icon) {
+	    if (jc.isCancelled()) {
+            return ;
+        }
+
+	    float scale = (float) s.iconSize / icon.getWidth();
+	    canvas.translate(s.leftMargin, (s.labelBackgroundHeight - Math.round(scale * icon.getHeight())) / 2f);
+	    canvas.scale(scale, scale);
+	    canvas.drawBitmap(icon, 0, 0, null);
+	}
+
+	private void drawFilePath(JobContext jc, AlbumSetTypeSlotRenderer.LabelSpec s, Canvas canvas, String filePath, int labelWidth) {
+	    if (jc.isCancelled()) {
+            return ;
+        }
+
+	    int offset = (s.labelBackgroundHeight - s.titleFontSize) / 2;
+        int lineHeight = (mBitmapHeight - offset - 2 * (offset + s.titleFontSize))/2;
+
+        int x = s.leftMargin;
+        int y = offset + s.titleFontSize + lineHeight;
+        drawText(canvas, x, y, filePath, labelWidth - x, mTitlePaint);
+	}
+
+	private void drawFileDate(JobContext jc, AlbumSetTypeSlotRenderer.LabelSpec s, Canvas canvas, String fileDate, int labelWidth) {
+	    if (jc.isCancelled()) {
+            return ;
+        }
+
+	    int offset = (s.labelBackgroundHeight - s.titleFontSize) / 2;
+        int lineHeight = (mBitmapHeight - offset - 2 * (offset + s.titleFontSize))/2;
+
+        int x = s.leftMargin;
+        int y = offset + 2*(s.titleFontSize + lineHeight);
+        drawText(canvas, x, y, fileDate, labelWidth - x, mTitlePaint);
 	}
 
 	public void recycleLabel(Bitmap label) {
