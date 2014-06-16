@@ -19,12 +19,15 @@ package com.android.fastergallery.util;
 import android.annotation.TargetApi;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.ConditionVariable;
@@ -32,6 +35,7 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.provider.MediaStore.Images.ImageColumns;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
@@ -40,6 +44,7 @@ import com.android.fastergallery.app.Gallery;
 import com.android.fastergallery.app.PackagesMonitor;
 import com.android.fastergallery.common.ApiHelper;
 import com.android.fastergallery.data.DataManager;
+import com.android.fastergallery.data.LocalImage;
 import com.android.fastergallery.data.MediaItem;
 import com.android.fastergallery.ui.TiledScreenNail;
 import com.android.fastergallery.util.ThreadPool.CancelListener;
@@ -47,6 +52,7 @@ import com.android.fastergallery.util.ThreadPool.JobContext;
 import com.android.fastergallery.R;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -74,7 +80,31 @@ public class GalleryUtils {
 	private static float sPixelDensity = -1f;
 	private static boolean sCameraAvailableInitialized = false;
 	private static boolean sCameraAvailable;
-
+	
+	
+	private static final int INDEX_CAPTION = 0;
+	private static final int INDEX_MIME_TYPE = 1;
+	private static final int INDEX_LATITUDE = 2;
+	private static final int INDEX_LONGITUDE = 3;
+	private static final int INDEX_DATE_TAKEN = 4;
+	private static final int INDEX_DATE_ADDED = 5;
+	private static final int INDEX_DATE_MODIFIED = 6;
+	private static final int INDEX_DATA = 7;
+	private static final int INDEX_ORIENTATION = 8;
+	private static final int INDEX_SIZE = 9;
+	
+	static final String[] PROJECTION = { ImageColumns.TITLE, // 0
+			ImageColumns.MIME_TYPE, // 1
+			ImageColumns.LATITUDE, // 2
+			ImageColumns.LONGITUDE, // 3
+			ImageColumns.DATE_TAKEN, // 4
+			ImageColumns.DATE_ADDED, // 5
+			ImageColumns.DATE_MODIFIED, // 6
+			ImageColumns.DATA, // 7
+			ImageColumns.ORIENTATION, // 8
+			ImageColumns.SIZE, // 9
+	};
+	
 	public static void initialize(Context context) {
 		DisplayMetrics metrics = new DisplayMetrics();
 		WindowManager wm = (WindowManager) context
@@ -414,5 +444,53 @@ public class GalleryUtils {
 	  }catch (Exception e) {
 		  e.printStackTrace();
 	  }
+	}
+	
+	public static void RenameImageDir(File fullPath, String newName) {
+		if (fullPath.getName().equalsIgnoreCase(newName)) {
+			return;
+		}
+		File newDir = new File(fullPath.getParent() + File.separator + newName);
+		fullPath.renameTo(newDir);
+	}
+
+	public static void insertToMediaProvide(ArrayList<ContentValues> aList, String oldname, 
+			String newName, ContentResolver cr) {
+		String path = null;
+		for (ContentValues value : aList) {
+			path = value.getAsString(ImageColumns.DATA);
+			path = path.replace(File.separator+oldname, File.separator+newName);
+			value.remove(ImageColumns.DATA);
+			value.put(ImageColumns.DATA, path);
+			value.put(ImageColumns.BUCKET_ID, new File(path).hashCode());
+			value.put(ImageColumns.BUCKET_DISPLAY_NAME, newName);
+			cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, value);
+			path = null;
+		}
+	}
+	
+	public static ArrayList<ContentValues> getCurrentValues(Uri uri, int bucketId, 
+			ContentResolver cr, String whereClause, String orderClause) {
+		ArrayList<ContentValues> ac = new ArrayList<ContentValues>();
+		Cursor dataCursor = cr.query(uri, PROJECTION, whereClause, 
+				new String[] {String.valueOf(bucketId)}, orderClause);
+		if (dataCursor != null) {
+			ContentValues value = new ContentValues();
+			while(dataCursor.moveToNext()) {
+				value.clear();
+				value.put(ImageColumns.TITLE, dataCursor.getString(INDEX_CAPTION));
+				value.put(ImageColumns.MIME_TYPE, dataCursor.getString(INDEX_MIME_TYPE));
+				value.put(ImageColumns.LATITUDE, dataCursor.getDouble(INDEX_LATITUDE));
+				value.put(ImageColumns.LONGITUDE, dataCursor.getDouble(INDEX_LONGITUDE));
+				value.put(ImageColumns.DATE_TAKEN, dataCursor.getLong(INDEX_DATE_TAKEN));
+				value.put(ImageColumns.DATE_ADDED, dataCursor.getLong(INDEX_DATE_ADDED));
+				value.put(ImageColumns.DATE_MODIFIED, dataCursor.getLong(INDEX_DATE_MODIFIED));
+				value.put(ImageColumns.DATA, dataCursor.getString(INDEX_DATA));
+				value.put(ImageColumns.ORIENTATION, dataCursor.getInt(INDEX_ORIENTATION));
+				value.put(ImageColumns.SIZE, dataCursor.getLong(INDEX_SIZE));
+				ac.add(value);
+			}
+		}
+		return ac;
 	}
 }

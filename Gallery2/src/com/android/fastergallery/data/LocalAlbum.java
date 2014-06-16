@@ -17,6 +17,7 @@
 package com.android.fastergallery.data;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
@@ -288,6 +289,27 @@ public class LocalAlbum extends MediaSet {
 	@Override
 	public void rename(String newName) {
 		GalleryUtils.assertNotInRenderThread();
+		String path = getRelativePath(mBucketId);
+		File root = Environment.getExternalStorageDirectory();
+		if (root == null || path == null || newName == null) {
+			return;
+		}
+		try {
+			// get current value array list
+			ArrayList<ContentValues> array = GalleryUtils.getCurrentValues(
+					mBaseUri, mBucketId, mResolver, mWhereClause, mOrderClause);
+			// rename dir
+			File full = new File(root.getAbsolutePath() + path);
+			GalleryUtils.RenameImageDir(full, newName);
+			// delete dir
+			delete();
+
+			// insert new path
+			GalleryUtils.insertToMediaProvide(array, full.getName(), newName,
+					mResolver);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

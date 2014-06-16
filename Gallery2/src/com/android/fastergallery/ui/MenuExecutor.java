@@ -66,6 +66,8 @@ public class MenuExecutor {
 	private final AbstractGalleryActivity mActivity;
 	private final SelectionManager mSelectionManager;
 	private final Handler mHandler;
+	
+	private EditText mAlertDialogText;
 
 	private static ProgressDialog createProgressDialog(Context context,
 			int titleId, int progressMax) {
@@ -132,6 +134,8 @@ public class MenuExecutor {
 				}
 			}
 		};
+		
+		mAlertDialogText = null;
 	}
 
 	private void stopTaskAndDismissDialog() {
@@ -237,12 +241,12 @@ public class MenuExecutor {
 				mimeType);
 	}
 
-	private void onMenuClicked(int action, ProgressListener listener) {
-		onMenuClicked(action, listener, false, true);
+	private void onMenuClicked(int action, ProgressListener listener, Object param) {
+		onMenuClicked(action, listener, false, true, param);
 	}
 
 	public void onMenuClicked(int action, ProgressListener listener,
-			boolean waitOnStop, boolean showDialog) {
+			boolean waitOnStop, boolean showDialog, Object param) {
 		int title;
 		switch (action) {
 		case R.id.action_select_all:
@@ -298,7 +302,7 @@ public class MenuExecutor {
 		default:
 			return;
 		}
-		startAction(action, title, listener, waitOnStop, showDialog);
+		startAction(action, title, listener, waitOnStop, showDialog, param);
 	}
 
 	private class ConfirmDialogListener implements OnClickListener,
@@ -317,18 +321,30 @@ public class MenuExecutor {
 				if (mListener != null) {
 					mListener.onConfirmDialogDismissed(true);
 				}
-				onMenuClicked(mActionId, mListener);
+				String newName = null;
+				if (mAlertDialogText != null) {
+					newName = mAlertDialogText.getText().toString();
+				}
+				onMenuClicked(mActionId, mListener, newName);
 			} else {
 				if (mListener != null) {
 					mListener.onConfirmDialogDismissed(false);
 				}
 			}
+			destoryAlertView();
 		}
 
 		@Override
 		public void onCancel(DialogInterface dialog) {
 			if (mListener != null) {
 				mListener.onConfirmDialogDismissed(false);
+			}
+			destoryAlertView();
+		}
+		
+		public void destoryAlertView() {
+			if (mAlertDialogText != null) {
+				mAlertDialogText = null;
 			}
 		}
 	}
@@ -344,16 +360,16 @@ public class MenuExecutor {
 					listener);
 			showAlertDialog(confirmMsg, cdl, action);
 		} else {
-			onMenuClicked(action, listener);
+			onMenuClicked(action, listener, null);
 		}
 	}
 
 	public void startAction(int action, int title, ProgressListener listener) {
-		startAction(action, title, listener, false, true);
+		startAction(action, title, listener, false, true, null);
 	}
 
 	public void startAction(int action, int title, ProgressListener listener,
-			boolean waitOnStop, boolean showDialog) {
+			boolean waitOnStop, boolean showDialog, Object param) {
 		ArrayList<Path> ids = mSelectionManager.getSelected(false);
 		stopTaskAndDismissDialog();
 
@@ -364,7 +380,7 @@ public class MenuExecutor {
 		} else {
 			mDialog = null;
 		}
-		MediaOperation operation = new MediaOperation(action, ids, listener, null);
+		MediaOperation operation = new MediaOperation(action, ids, listener, param);
 		mTask = mActivity.getBatchServiceThreadPoolIfAvailable().submit(
 				operation, null);
 		mWaitOnStop = waitOnStop;
@@ -487,8 +503,9 @@ public class MenuExecutor {
 	
 	private void showAlertDialog(String confirmMsg, ConfirmDialogListener cdl, int action) {
 		if (action == R.id.action_rename) {
+			mAlertDialogText = new EditText(mActivity);
 			new AlertDialog.Builder(mActivity.getAndroidContext())
-					.setView(new EditText(mActivity)).setMessage(confirmMsg)
+					.setView(mAlertDialogText).setMessage(confirmMsg)
 					.setOnCancelListener(cdl)
 					.setPositiveButton(R.string.ok, cdl)
 					.setNegativeButton(R.string.cancel, cdl).create().show();

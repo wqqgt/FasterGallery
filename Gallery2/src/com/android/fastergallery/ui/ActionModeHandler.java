@@ -215,7 +215,7 @@ public class ActionModeHandler implements Callback,
 		try {
 			if (itemId == R.id.action_select_all) {
 				updateSupportedOperation();
-				mMenuExecutor.onMenuClicked(itemId, null, false, true);
+				mMenuExecutor.onMenuClicked(itemId, null, false, true, null);
 			}
 			return true;
 		} finally {
