@@ -31,8 +31,6 @@ import com.android.fastergallery.glrenderer.UploadedTexture;
 import com.android.fastergallery.ui.AlbumSetTypeSlidingWindow.AlbumSetEntry;
 import com.android.fastergallery.R;
 
-import debug.Console;
-
 public class AlbumSetTypeSlotRenderer extends AbstractSlotRenderer {
 	@SuppressWarnings("unused")
 	private static final String TAG = "AlbumSetView";
@@ -217,7 +215,6 @@ public class AlbumSetTypeSlotRenderer extends AbstractSlotRenderer {
 			content.draw(canvas, -b, height - h + b, width + b + b, h);
 			break;
 		}
-		Console.log("renderLabel", content.getHeight(), height);
 		return 0;
 	}
 	
