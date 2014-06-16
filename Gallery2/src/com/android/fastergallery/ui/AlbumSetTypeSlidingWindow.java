@@ -16,6 +16,7 @@
 
 package com.android.fastergallery.ui;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.graphics.Bitmap;
@@ -23,10 +24,13 @@ import android.os.Message;
 
 import com.android.fastergallery.app.AbstractGalleryActivity;
 import com.android.fastergallery.app.AlbumSetDataLoader;
+import com.android.fastergallery.app.FilterUtils;
 import com.android.fastergallery.app.AlbumSetDataLoader.AlbumSetCoverItem;
 import com.android.fastergallery.common.Utils;
 import com.android.fastergallery.data.DataManager;
 import com.android.fastergallery.data.DataSourceType;
+import com.android.fastergallery.data.LocalAlbum;
+import com.android.fastergallery.data.LocalImage;
 import com.android.fastergallery.data.MediaDetails;
 import com.android.fastergallery.data.MediaItem;
 import com.android.fastergallery.data.MediaObject;
@@ -266,6 +270,24 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 				|| entry.sourceType != sourceType;
 	}
 
+	private String getTitle(MediaSet album) {
+	    if (album == null) {
+	        return "";
+	    }
+
+	    String title = "";
+	    int viewType = AlbumSetTypeManager.get().getCurrentType();
+        if (FilterUtils.CLUSTER_BY_LIST == viewType) {
+            MediaItem item = album.getCoverMediaItem();
+            if (item != null && item instanceof LocalImage) {
+                title = new File(((LocalImage)item).filePath).getParent();
+            }
+        }else {
+            title = Utils.ensureNotNull(album.getName());
+        }
+        return title;
+	}
+
 	private void updateAlbumSetEntry(AlbumSetEntry entry, int slotIndex) {
 		MediaSet album = mSource.getMediaSet(slotIndex);
 		AlbumSetCoverItem cover = mSource.getCoverItems(slotIndex);
@@ -277,8 +299,9 @@ public class AlbumSetTypeSlidingWindow implements AlbumSetDataLoader.DataListene
 		entry.cacheStatus = identifyCacheStatus(album);
 		entry.setPath = (album == null) ? null : album.getPath();
 
-		String title = (album == null) ? "" : Utils.ensureNotNull(album
-				.getName());
+//		String title = (album == null) ? "" : Utils.ensureNotNull(album
+//				.getName());
+		String title = getTitle(album);
 		int sourceType = DataSourceType.identifySourceType(album);
 		if (isLabelChanged(entry, title, totalCount, sourceType)) {
 			entry.title = title;
