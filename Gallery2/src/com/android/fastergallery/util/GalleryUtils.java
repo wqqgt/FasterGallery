@@ -446,12 +446,12 @@ public class GalleryUtils {
 	  }
 	}
 	
-	public static void RenameImageDir(File fullPath, String newName) {
+	public static boolean RenameImageDir(File fullPath, String newName) {
 		if (fullPath.getName().equalsIgnoreCase(newName)) {
-			return;
+			return false;
 		}
 		File newDir = new File(fullPath.getParent() + File.separator + newName);
-		fullPath.renameTo(newDir);
+		return fullPath.renameTo(newDir);
 	}
 
 	public static void insertToMediaProvide(ArrayList<ContentValues> aList, String oldname, 
@@ -475,9 +475,8 @@ public class GalleryUtils {
 		Cursor dataCursor = cr.query(uri, PROJECTION, whereClause, 
 				new String[] {String.valueOf(bucketId)}, orderClause);
 		if (dataCursor != null) {
-			ContentValues value = new ContentValues();
 			while(dataCursor.moveToNext()) {
-				value.clear();
+				ContentValues value = new ContentValues();
 				value.put(ImageColumns.TITLE, dataCursor.getString(INDEX_CAPTION));
 				value.put(ImageColumns.MIME_TYPE, dataCursor.getString(INDEX_MIME_TYPE));
 				value.put(ImageColumns.LATITUDE, dataCursor.getDouble(INDEX_LATITUDE));
@@ -490,6 +489,7 @@ public class GalleryUtils {
 				value.put(ImageColumns.SIZE, dataCursor.getLong(INDEX_SIZE));
 				ac.add(value);
 			}
+			dataCursor.close();
 		}
 		return ac;
 	}

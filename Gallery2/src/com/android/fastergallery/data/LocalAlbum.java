@@ -300,7 +300,9 @@ public class LocalAlbum extends MediaSet {
 					mBaseUri, mBucketId, mResolver, mWhereClause, mOrderClause);
 			// rename dir
 			File full = new File(root.getAbsolutePath() + path);
-			GalleryUtils.RenameImageDir(full, newName);
+			if (GalleryUtils.RenameImageDir(full, newName) == false) {
+				return;
+			}
 			// delete dir
 			delete();
 
