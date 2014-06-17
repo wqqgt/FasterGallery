@@ -17,5 +17,5 @@
 package com.android.fasterphotos.data;
 
 interface PhotoProviderAuthority {
-	public static final String AUTHORITY = "com.android.gallery3d.photoprovider";
+	public static final String AUTHORITY = "com.android.fastergallery.photoprovider";
 }

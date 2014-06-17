@@ -114,13 +114,13 @@ public class DataManager implements StitchingChangeListener {
 
 		// the order matters, the UriSource must come last
 		addSource(new LocalSource(mApplication));
-		addSource(new PicasaSource(mApplication));
-		addSource(new ComboSource(mApplication));
+//		addSource(new PicasaSource(mApplication));
+//		addSource(new ComboSource(mApplication));
 		addSource(new ClusterSource(mApplication));
-		addSource(new FilterSource(mApplication));
-		addSource(new SecureSource(mApplication));
+//		addSource(new FilterSource(mApplication));
+//		addSource(new SecureSource(mApplication));
 		addSource(new UriSource(mApplication));
-		addSource(new SnailSource(mApplication));
+//		addSource(new SnailSource(mApplication));
 
 		if (mActiveCount > 0) {
 			for (MediaSource source : mSourceMap.values()) {
