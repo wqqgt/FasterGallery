@@ -46,7 +46,7 @@ public class AlbumSetDataLoader {
 	private static final int MSG_LOAD_FINISH = 2;
 	private static final int MSG_RUN_OBJECT = 3;
 	
-	private static final int MEDIA_SET_THUMBILE_COUNT = 4;
+	private static final int MEDIA_SET_THUMBILE_COUNT = 1;
 
 	public static interface DataListener {
 		public void onContentChanged(int index);
