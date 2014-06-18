@@ -209,38 +209,97 @@ public class AlbumTypeLabelMaker {
 					- BORDER_SIZE, bitmap.getHeight() - BORDER_SIZE);
 			canvas.translate(BORDER_SIZE, BORDER_SIZE);
 
-			//列表模式特殊处理
-			if (FilterUtils.CLUSTER_BY_LIST == mViewType) {
-			    //清除上次画布内容
-                Paint paint = new Paint();
-                paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-                canvas.drawPaint(paint);
-                paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC));
-
-                //draw title
-                drawTitle(jc, s, canvas, title, labelWidth, 0);
-                //draw count
-                drawCount(jc, s, canvas, count, labelWidth);
-                //draw filePath
-                drawFilePath(jc, s, canvas, filePath, labelWidth);
-                //draw fileDate
-                drawFileDate(jc, s, canvas, fileDate, labelWidth);
-                return bitmap;
+			switch(mViewType) {
+			    case FilterUtils.CLUSTER_BY_LIST:
+			        renderByList(jc, s, canvas, title, count, filePath, fileDate, labelWidth);
+			        break;
+			    case FilterUtils.CLUSTER_BY_TIME:
+			        renderByTime(jc, s, canvas, title, count, labelWidth);
+			        break;
+			    default:
+			        renderByOther(jc, s, canvas, title, count, labelWidth, icon);
+			        break;
 			}
-
-
-			//draw background
-			canvas.drawColor(mSpec.backgroundColor, PorterDuff.Mode.SRC);
-			// draw title
-			drawTitle(jc, s, canvas, title, labelWidth, s.iconSize);
-			// draw count
-			drawCount(jc, s, canvas, count, labelWidth);
-			// draw the icon
-			drawIcon(jc, s, canvas, icon);
 			return bitmap;
 		}
 	}
 
+	/**
+	 * render list view
+	 * @param jc
+	 * @param s
+	 * @param canvas
+	 * @param title
+	 * @param count
+	 * @param filePath
+	 * @param fileDate
+	 * @param labelWidth
+	 */
+	private void renderByList(JobContext jc, AlbumSetTypeSlotRenderer.LabelSpec s, Canvas canvas, String title, String count, String filePath, String fileDate, int labelWidth) {
+	  //清除上次画布内容
+        Paint paint = new Paint();
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        canvas.drawPaint(paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC));
+
+        //draw title
+        drawTitle(jc, s, canvas, title, labelWidth, 0);
+        //draw count
+        drawCount(jc, s, canvas, count, labelWidth);
+        //draw filePath
+        drawFilePath(jc, s, canvas, filePath, labelWidth);
+        //draw fileDate
+        drawFileDate(jc, s, canvas, fileDate, labelWidth);
+	}
+
+	/**
+	 * render time view
+	 * @param jc
+	 * @param s
+	 * @param canvas
+	 * @param title
+	 * @param count
+	 * @param labelWidth
+	 */
+	private void renderByTime(JobContext jc, AlbumSetTypeSlotRenderer.LabelSpec s, Canvas canvas, String title, String count, int labelWidth) {
+        //draw background
+        canvas.drawColor(mSpec.backgroundColor, PorterDuff.Mode.SRC);
+        // draw title
+        drawTitle(jc, s, canvas, title, labelWidth, s.iconSize);
+        // draw count
+        drawCount(jc, s, canvas, count, labelWidth);
+	}
+
+	/**
+	 * render other view (exclude time or list view)
+	 * @param jc
+	 * @param s
+	 * @param canvas
+	 * @param title
+	 * @param count
+	 * @param labelWidth
+	 * @param icon
+	 */
+	private void renderByOther(JobContext jc, AlbumSetTypeSlotRenderer.LabelSpec s, Canvas canvas, String title, String count, int labelWidth, Bitmap icon) {
+	  //draw background
+        canvas.drawColor(mSpec.backgroundColor, PorterDuff.Mode.SRC);
+        // draw title
+        drawTitle(jc, s, canvas, title, labelWidth, s.iconSize);
+        // draw count
+        drawCount(jc, s, canvas, count, labelWidth);
+        // draw the icon
+        drawIcon(jc, s, canvas, icon);
+	}
+
+	/**
+	 * draw title
+	 * @param jc
+	 * @param s
+	 * @param canvas
+	 * @param title
+	 * @param labelWidth
+	 * @param iconSize
+	 */
 	private void drawTitle(JobContext jc, AlbumSetTypeSlotRenderer.LabelSpec s, Canvas canvas, String title, int labelWidth, int iconSize) {
 	    if (jc.isCancelled()) {
             return ;
@@ -252,6 +311,14 @@ public class AlbumTypeLabelMaker {
                 - s.titleRightMargin, mTitlePaint);
 	}
 
+	/**
+	 * draw count
+	 * @param jc
+	 * @param s
+	 * @param canvas
+	 * @param count
+	 * @param labelWidth
+	 */
 	private void drawCount(JobContext jc, AlbumSetTypeSlotRenderer.LabelSpec s, Canvas canvas, String count, int labelWidth) {
 	    if (jc.isCancelled()) {
             return ;
@@ -262,6 +329,13 @@ public class AlbumTypeLabelMaker {
         drawText(canvas, x, y, count, labelWidth - x, mCountPaint);
 	}
 
+	/**
+	 * draw icon
+	 * @param jc
+	 * @param s
+	 * @param canvas
+	 * @param icon
+	 */
 	private void drawIcon(JobContext jc, AlbumSetTypeSlotRenderer.LabelSpec s, Canvas canvas, Bitmap icon) {
 	    if (jc.isCancelled()) {
             return ;
@@ -273,6 +347,14 @@ public class AlbumTypeLabelMaker {
 	    canvas.drawBitmap(icon, 0, 0, null);
 	}
 
+	/**
+	 * draw filePath
+	 * @param jc
+	 * @param s
+	 * @param canvas
+	 * @param filePath
+	 * @param labelWidth
+	 */
 	private void drawFilePath(JobContext jc, AlbumSetTypeSlotRenderer.LabelSpec s, Canvas canvas, String filePath, int labelWidth) {
 	    if (jc.isCancelled()) {
             return ;
@@ -286,6 +368,14 @@ public class AlbumTypeLabelMaker {
         drawText(canvas, x, y, filePath, labelWidth - x, mTitlePaint);
 	}
 
+	/**
+	 * draw fileDate
+	 * @param jc
+	 * @param s
+	 * @param canvas
+	 * @param fileDate
+	 * @param labelWidth
+	 */
 	private void drawFileDate(JobContext jc, AlbumSetTypeSlotRenderer.LabelSpec s, Canvas canvas, String fileDate, int labelWidth) {
 	    if (jc.isCancelled()) {
             return ;
