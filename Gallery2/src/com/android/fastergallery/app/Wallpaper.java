@@ -26,6 +26,8 @@ import android.os.Bundle;
 import android.view.Display;
 
 import com.android.fastergallery.common.ApiHelper;
+import com.android.fastergallery.edit.CropActivity;
+import com.android.fastergallery.edit.CropExtras;
 
 /**
  * Wallpaper picker for the gallery application. This just redirects to the
@@ -92,24 +94,24 @@ public class Wallpaper extends Activity {
 			// fall-through
 		}
 		case STATE_PHOTO_PICKED: {
-//			int width = getWallpaperDesiredMinimumWidth();
-//			int height = getWallpaperDesiredMinimumHeight();
-//			Point size = getDefaultDisplaySize(new Point());
-//			float spotlightX = (float) size.x / width;
-//			float spotlightY = (float) size.y / height;
-//			Intent request = new Intent(FilterShowActivity.CROP_ACTION)
-//					.setDataAndType(mPickedItem, IMAGE_TYPE)
-//					.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT)
-//					.putExtra(CropExtras.KEY_OUTPUT_X, width)
-//					.putExtra(CropExtras.KEY_OUTPUT_Y, height)
-//					.putExtra(CropExtras.KEY_ASPECT_X, width)
-//					.putExtra(CropExtras.KEY_ASPECT_Y, height)
-//					.putExtra(CropExtras.KEY_SPOTLIGHT_X, spotlightX)
-//					.putExtra(CropExtras.KEY_SPOTLIGHT_Y, spotlightY)
-//					.putExtra(CropExtras.KEY_SCALE, true)
-//					.putExtra(CropExtras.KEY_SCALE_UP_IF_NEEDED, true)
-//					.putExtra(CropExtras.KEY_SET_AS_WALLPAPER, true);
-//			startActivity(request);
+			int width = getWallpaperDesiredMinimumWidth();
+			int height = getWallpaperDesiredMinimumHeight();
+			Point size = getDefaultDisplaySize(new Point());
+			float spotlightX = (float) size.x / width;
+			float spotlightY = (float) size.y / height;
+			Intent request = new Intent(CropActivity.CROP_ACTION)
+					.setDataAndType(mPickedItem, IMAGE_TYPE)
+					.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT)
+					.putExtra(CropExtras.KEY_OUTPUT_X, width)
+					.putExtra(CropExtras.KEY_OUTPUT_Y, height)
+					.putExtra(CropExtras.KEY_ASPECT_X, width)
+					.putExtra(CropExtras.KEY_ASPECT_Y, height)
+					.putExtra(CropExtras.KEY_SPOTLIGHT_X, spotlightX)
+					.putExtra(CropExtras.KEY_SPOTLIGHT_Y, spotlightY)
+					.putExtra(CropExtras.KEY_SCALE, true)
+					.putExtra(CropExtras.KEY_SCALE_UP_IF_NEEDED, true)
+					.putExtra(CropExtras.KEY_SET_AS_WALLPAPER, true);
+			startActivity(request);
 			finish();
 		}
 		}
