@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2013 The Android Open Source Project
+<!--
+     Copyright (C) 2012 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -13,9 +14,14 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
-    <color name="crop_shadow_color">#CF000000</color>
-    <color name="crop_shadow_wp_color">#4F000000</color>
-    <color name="crop_wp_markers">#7FFFFFFF</color>
-    <color name="background_screen">#101010</color>
-</resources>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@drawable/cropshow_button_background"
+    android:id="@+id/filtershow_done"
+    android:textAllCaps="true"
+    android:text="@string/save"
+    android:gravity="center_vertical"
+    android:textSize="14sp"
+    android:drawableLeft="@drawable/menu_save_photo"
+    android:drawablePadding="8dip" />

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2013 The Android Open Source Project
+<!--
+     Copyright (C) 2013 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -13,9 +14,8 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
-    <color name="crop_shadow_color">#CF000000</color>
-    <color name="crop_shadow_wp_color">#4F000000</color>
-    <color name="crop_wp_markers">#7FFFFFFF</color>
-    <color name="background_screen">#101010</color>
-</resources>
+<bitmap
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:src="@drawable/crop_background"
+        android:tileMode="repeat"
+        android:dither="false" />

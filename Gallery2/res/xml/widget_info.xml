@@ -4,4 +4,4 @@
         android:minHeight="@dimen/appwidget_height"
         android:updatePeriodMillis="86400000"
         android:initialLayout="@layout/appwidget_main"
-        android:configure="com.android.gallery3d.gadget.WidgetConfigure"/>
+        android:configure="com.android.fastergallery.gadget.WidgetConfigure"/>

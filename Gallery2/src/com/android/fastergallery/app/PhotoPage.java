@@ -56,6 +56,7 @@ import com.android.fastergallery.data.SnailAlbum;
 import com.android.fastergallery.data.SnailItem;
 import com.android.fastergallery.data.SnailSource;
 import com.android.fastergallery.data.MediaObject.PanoramaSupportCallback;
+import com.android.fastergallery.edit.CropActivity;
 import com.android.fastergallery.picasasource.PicasaSource;
 import com.android.fastergallery.ui.DetailsHelper;
 import com.android.fastergallery.ui.GLView;
@@ -1132,15 +1133,15 @@ public abstract class PhotoPage extends ActivityState implements
 			return true;
 		}
 		case R.id.action_crop: {
-//			Activity activity = mActivity;
-//			Intent intent = new Intent(CropActivity.CROP_ACTION);
-//			intent.setClass(activity, CropActivity.class);
-//			intent.setDataAndType(manager.getContentUri(path),
-//					current.getMimeType()).setFlags(
-//					Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//			activity.startActivityForResult(intent, PicasaSource
-//					.isPicasaImage(current) ? REQUEST_CROP_PICASA
-//					: REQUEST_CROP);
+			Activity activity = mActivity;
+			Intent intent = new Intent(CropActivity.CROP_ACTION);
+			intent.setClass(activity, CropActivity.class);
+			intent.setDataAndType(manager.getContentUri(path),
+					current.getMimeType()).setFlags(
+					Intent.FLAG_GRANT_READ_URI_PERMISSION);
+			activity.startActivityForResult(intent, PicasaSource
+					.isPicasaImage(current) ? REQUEST_CROP_PICASA
+					: REQUEST_CROP);
 			return true;
 		}
 		case R.id.action_trim: {

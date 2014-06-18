@@ -19,6 +19,11 @@
         <item name="listPreferredItemHeightSmall">48dp</item>
         <item name="switchStyle">@android:style/Widget.CompoundButton</item>
     </style>
+    
+    <style name="Theme.CropShow" parent="Theme.Gallery">
+        <item name="android:windowBackground">@color/background_screen</item>
+    </style>
+
     <style name="Theme.Gallery.Dialog" parent="android:Theme.Holo.Dialog"/>
     <style name="Theme.Gallery" parent="Theme.GalleryBase">
         <item name="android:displayOptions"></item>
