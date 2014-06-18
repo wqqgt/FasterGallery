@@ -44,6 +44,8 @@
     <!-- configuration for album page -->
     <integer name="album_rows_land">3</integer>
     <integer name="album_rows_port">5</integer>
+    <integer name="album_cols_land">5</integer>
+    <integer name="album_cols_port">3</integer>
     <dimen name="album_slot_gap">5dp</dimen>
 
     <!-- configuration for manage page -->

@@ -170,6 +170,8 @@ final class Config {
 			slotViewSpec = new SlotView.Spec();
 			slotViewSpec.rowsLand = r.getInteger(R.integer.album_rows_land);
 			slotViewSpec.rowsPort = r.getInteger(R.integer.album_rows_port);
+			slotViewSpec.colsLand = r.getInteger(R.integer.album_cols_land);
+			slotViewSpec.colsPort = r.getInteger(R.integer.album_cols_port);
 			slotViewSpec.slotGap = r
 					.getDimensionPixelSize(R.dimen.album_slot_gap);
 		}
