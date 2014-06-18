@@ -728,53 +728,50 @@ public abstract class PhotoPage extends ActivityState implements
 //		mActivity.startActivity(intent);
 //	}
 
-//	private void launchPhotoEditor() {
-//		MediaItem current = mModel.getMediaItem(0);
-//		if (current == null
-//				|| (current.getSupportedOperations() & MediaObject.SUPPORT_EDIT) == 0) {
-//			return;
-//		}
-//
-//		Intent intent = new Intent(ACTION_NEXTGEN_EDIT);
-//
-//		intent.setDataAndType(current.getContentUri(), current.getMimeType())
-//				.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//		if (mActivity
-//				.getPackageManager()
-//				.queryIntentActivities(intent,
-//						PackageManager.MATCH_DEFAULT_ONLY).size() == 0) {
-//			intent.setAction(Intent.ACTION_EDIT);
-//		}
-//		intent.putExtra(FilterShowActivity.LAUNCH_FULLSCREEN,
-//				mActivity.isFullscreen());
-//		((Activity) mActivity).startActivityForResult(
-//				Intent.createChooser(intent, null), REQUEST_EDIT);
-//		overrideTransitionToEditor();
-//	}
+	private void launchPhotoEditor() {
+		MediaItem current = mModel.getMediaItem(0);
+		if (current == null
+				|| (current.getSupportedOperations() & MediaObject.SUPPORT_EDIT) == 0) {
+			return;
+		}
 
-//	private void launchSimpleEditor() {
-//		MediaItem current = mModel.getMediaItem(0);
-//		if (current == null
-//				|| (current.getSupportedOperations() & MediaObject.SUPPORT_EDIT) == 0) {
-//			return;
-//		}
-//
-//		Intent intent = new Intent(ACTION_SIMPLE_EDIT);
-//
-//		intent.setDataAndType(current.getContentUri(), current.getMimeType())
-//				.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//		if (mActivity
-//				.getPackageManager()
-//				.queryIntentActivities(intent,
-//						PackageManager.MATCH_DEFAULT_ONLY).size() == 0) {
-//			intent.setAction(Intent.ACTION_EDIT);
-//		}
-//		intent.putExtra(FilterShowActivity.LAUNCH_FULLSCREEN,
-//				mActivity.isFullscreen());
-//		((Activity) mActivity).startActivityForResult(
-//				Intent.createChooser(intent, null), REQUEST_EDIT);
-//		overrideTransitionToEditor();
-//	}
+		Intent intent = new Intent(ACTION_NEXTGEN_EDIT);
+
+		intent.setDataAndType(current.getContentUri(), current.getMimeType())
+				.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		if (mActivity
+				.getPackageManager()
+				.queryIntentActivities(intent,
+						PackageManager.MATCH_DEFAULT_ONLY).size() == 0) {
+			intent.setAction(Intent.ACTION_EDIT);
+		}
+
+		((Activity) mActivity).startActivityForResult(
+				Intent.createChooser(intent, null), REQUEST_EDIT);
+		overrideTransitionToEditor();
+	}
+
+	private void launchSimpleEditor() {
+		MediaItem current = mModel.getMediaItem(0);
+		if (current == null
+				|| (current.getSupportedOperations() & MediaObject.SUPPORT_EDIT) == 0) {
+			return;
+		}
+
+		Intent intent = new Intent(ACTION_SIMPLE_EDIT);
+
+		intent.setDataAndType(current.getContentUri(), current.getMimeType())
+				.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		if (mActivity
+				.getPackageManager()
+				.queryIntentActivities(intent,
+						PackageManager.MATCH_DEFAULT_ONLY).size() == 0) {
+			intent.setAction(Intent.ACTION_EDIT);
+		}
+		((Activity) mActivity).startActivityForResult(
+				Intent.createChooser(intent, null), REQUEST_EDIT);
+		overrideTransitionToEditor();
+	}
 
 	private void requestDeferredUpdate() {
 		mDeferUpdateUntil = SystemClock.uptimeMillis() + DEFERRED_UPDATE_MS;
@@ -1161,11 +1158,11 @@ public abstract class PhotoPage extends ActivityState implements
 			return true;
 		}
 		case R.id.action_edit: {
-//			launchPhotoEditor();
+			launchPhotoEditor();
 			return true;
 		}
 		case R.id.action_simple_edit: {
-//			launchSimpleEditor();
+			launchSimpleEditor();
 			return true;
 		}
 		case R.id.action_details: {
