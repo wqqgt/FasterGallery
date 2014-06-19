@@ -16,7 +16,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/action_select_view"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/switch_to_camera"
+            android:title="@string/albums"
             android:showAsAction="ifRoom" />
     <item android:id="@+id/action_camera"
             android:icon="@drawable/ic_menu_camera_holo_light"
@@ -24,9 +24,6 @@
             android:showAsAction="ifRoom" />
     <item android:id="@+id/action_select"
             android:title="@string/select_album"
-            android:showAsAction="never" />
-    <item android:id="@+id/action_manage_offline"
-            android:title="@string/make_available_offline"
             android:showAsAction="never" />
     <item android:id="@+id/action_sync_picasa_albums"
             android:title="@string/sync_picasa_albums"
