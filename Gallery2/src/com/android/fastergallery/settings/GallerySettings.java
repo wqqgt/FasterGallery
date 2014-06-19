@@ -16,8 +16,17 @@
 
 package com.android.fastergallery.settings;
 
+import com.android.fastergallery.R;
+
+import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
 public class GallerySettings extends PreferenceActivity {
 	private static final String TAG = "GallerySettings";
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		addPreferencesFromResource(R.xml.settings);
+	}
 }
