@@ -327,12 +327,18 @@ public class AlbumSetPage extends ActivityState implements
 
 	@Override
 	public void doCluster(int clusterType) {
-		String basePath = mMediaSet.getPath().toString();
-		String newPath = FilterUtils.switchClusterPath(basePath, clusterType);
-		Bundle data = new Bundle(getData());
-		data.putString(AlbumSetPage.KEY_MEDIA_PATH, newPath);
-		data.putInt(KEY_SELECTED_CLUSTER_TYPE, clusterType);
-		mActivity.getStateManager().switchState(this, AlbumSetPage.class, data);
+		if (clusterType == FilterUtils.CLUSTER_BY_CASCADING) {
+			pickAlbum(0);
+		} else {
+			String basePath = mMediaSet.getPath().toString();
+			String newPath = FilterUtils.switchClusterPath(basePath,
+					clusterType);
+			Bundle data = new Bundle(getData());
+			data.putString(AlbumSetPage.KEY_MEDIA_PATH, newPath);
+			data.putInt(KEY_SELECTED_CLUSTER_TYPE, clusterType);
+			mActivity.getStateManager().switchState(this, AlbumSetPage.class,
+					data);
+		}
 	}
 
 	@Override
