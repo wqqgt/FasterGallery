@@ -35,6 +35,7 @@ import com.android.fastergallery.data.MediaObject;
 import com.android.fastergallery.data.MediaSet;
 import com.android.fastergallery.data.Path;
 import com.android.fastergallery.glrenderer.GLCanvas;
+import com.android.fastergallery.ui.AlbumSetTypeSlotView;
 import com.android.fastergallery.ui.CacheStorageUsageInfo;
 import com.android.fastergallery.ui.GLRoot;
 import com.android.fastergallery.ui.GLView;
@@ -64,7 +65,7 @@ public class ManageCachePage extends ActivityState implements
 	private static final int MSG_REQUEST_LAYOUT = 2;
 	private static final int PROGRESS_BAR_MAX = 10000;
 
-	private SlotView mSlotView;
+	private AlbumSetTypeSlotView mSlotView;
 	private MediaSet mMediaSet;
 
 	protected SelectionManager mSelectionManager;
@@ -294,12 +295,12 @@ public class ManageCachePage extends ActivityState implements
 		mSelectionManager.setSelectionListener(this);
 
 		Config.ManageCachePage config = Config.ManageCachePage.get(activity);
-		mSlotView = new SlotView(mActivity, config.slotViewSpec);
+		mSlotView = new AlbumSetTypeSlotView(mActivity, config.slotViewSpec);
 		mSelectionDrawer = new ManageCacheDrawer(mActivity, mSelectionManager,
-				mSlotView, config.labelSpec, config.cachePinSize,
+				mSlotView, config.labelTypeSpec, config.cachePinSize,
 				config.cachePinMargin);
 		mSlotView.setSlotRenderer(mSelectionDrawer);
-		mSlotView.setListener(new SlotView.SimpleListener() {
+		mSlotView.setListener(new AlbumSetTypeSlotView.SimpleListener() {
 			@Override
 			public void onDown(int index) {
 				ManageCachePage.this.onDown(index);

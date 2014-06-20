@@ -25,10 +25,10 @@ import com.android.fastergallery.data.Path;
 import com.android.fastergallery.glrenderer.GLCanvas;
 import com.android.fastergallery.glrenderer.ResourceTexture;
 import com.android.fastergallery.glrenderer.StringTexture;
-import com.android.fastergallery.ui.AlbumSetSlidingWindow.AlbumSetEntry;
+import com.android.fastergallery.ui.AlbumSetTypeSlidingWindow.AlbumSetEntry;
 import com.android.fastergallery.R;
 
-public class ManageCacheDrawer extends AlbumSetSlotRenderer {
+public class ManageCacheDrawer extends AlbumSetTypeSlotRenderer {
 	private final ResourceTexture mCheckedItem;
 	private final ResourceTexture mUnCheckedItem;
 	private final SelectionManager mSelectionManager;
@@ -40,7 +40,7 @@ public class ManageCacheDrawer extends AlbumSetSlotRenderer {
 	private final int mCachePinMargin;
 
 	public ManageCacheDrawer(AbstractGalleryActivity activity,
-			SelectionManager selectionManager, SlotView slotView,
+			SelectionManager selectionManager, AlbumSetTypeSlotView slotView,
 			LabelSpec labelSpec, int cachePinSize, int cachePinMargin) {
 		super(activity, selectionManager, slotView, labelSpec, activity
 				.getResources().getColor(R.color.cache_placeholder));

@@ -19,7 +19,6 @@ package com.android.fastergallery.app;
 import android.content.Context;
 import android.content.res.Resources;
 
-import com.android.fastergallery.ui.AlbumSetSlotRenderer;
 import com.android.fastergallery.ui.AlbumSetTypeManager;
 import com.android.fastergallery.ui.AlbumSetTypeSlotRenderer;
 import com.android.fastergallery.ui.AlbumSetTypeSlotView;
@@ -30,9 +29,8 @@ final class Config {
 	public static class AlbumSetPage {
 		private static AlbumSetPage sInstance;
 
-		public SlotView.Spec slotViewSpec;
+		public AlbumSetTypeSlotView.Spec slotViewSpec;
 		public AlbumSetTypeSlotView.Spec slotTypeViewSpec;
-		public AlbumSetSlotRenderer.LabelSpec labelSpec;
 		public AlbumSetTypeSlotRenderer.LabelSpec labelTypeSpec;
 		public int paddingTop;
 		public int paddingBottom;
@@ -53,7 +51,7 @@ final class Config {
 
 			placeholderColor = r.getColor(R.color.albumset_placeholder);
 
-			slotViewSpec = new SlotView.Spec();
+			slotViewSpec = new AlbumSetTypeSlotView.Spec();
 			slotViewSpec.rowsLand = r.getInteger(R.integer.albumset_rows_land);
 			slotViewSpec.rowsPort = r.getInteger(R.integer.albumset_rows_port);
 			slotViewSpec.colsLand = r.getInteger(R.integer.albumset_cols_land);
@@ -66,28 +64,6 @@ final class Config {
 			paddingBottom = r
 					.getDimensionPixelSize(R.dimen.albumset_padding_bottom);
 
-			labelSpec = new AlbumSetSlotRenderer.LabelSpec();
-			labelSpec.labelBackgroundHeight = r
-					.getDimensionPixelSize(R.dimen.albumset_label_background_height);
-			labelSpec.titleOffset = r
-					.getDimensionPixelSize(R.dimen.albumset_title_offset);
-			labelSpec.countOffset = r
-					.getDimensionPixelSize(R.dimen.albumset_count_offset);
-			labelSpec.titleFontSize = r
-					.getDimensionPixelSize(R.dimen.albumset_title_font_size);
-			labelSpec.countFontSize = r
-					.getDimensionPixelSize(R.dimen.albumset_count_font_size);
-			labelSpec.leftMargin = r
-					.getDimensionPixelSize(R.dimen.albumset_left_margin);
-			labelSpec.titleRightMargin = r
-					.getDimensionPixelSize(R.dimen.albumset_title_right_margin);
-			labelSpec.iconSize = r
-					.getDimensionPixelSize(R.dimen.albumset_icon_size);
-			labelSpec.backgroundColor = r
-					.getColor(R.color.albumset_label_background);
-			labelSpec.titleColor = r.getColor(R.color.albumset_label_title);
-			labelSpec.countColor = r.getColor(R.color.albumset_label_count);
-			
 			slotTypeViewSpec = 	new AlbumSetTypeSlotView.Spec();
 			configSpecByType(context);
 			slotTypeViewSpec.slotGap = r

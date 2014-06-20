@@ -48,7 +48,6 @@ import com.android.fastergallery.glrenderer.GLCanvas;
 import com.android.fastergallery.picasasource.PicasaSource;
 import com.android.fastergallery.settings.GallerySettings;
 import com.android.fastergallery.ui.ActionModeHandler;
-import com.android.fastergallery.ui.AlbumSetSlotRenderer;
 import com.android.fastergallery.ui.AlbumSetTypeManager;
 import com.android.fastergallery.ui.AlbumSetTypeSlotRenderer;
 import com.android.fastergallery.ui.AlbumSetTypeSlotView;

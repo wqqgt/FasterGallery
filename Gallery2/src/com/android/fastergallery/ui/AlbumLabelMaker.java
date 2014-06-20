@@ -35,7 +35,7 @@ import com.android.fastergallery.R;
 public class AlbumLabelMaker {
 	private static final int BORDER_SIZE = 0;
 
-	private final AlbumSetSlotRenderer.LabelSpec mSpec;
+	private final AlbumSetTypeSlotRenderer.LabelSpec mSpec;
 	private final TextPaint mTitlePaint;
 	private final TextPaint mCountPaint;
 	private final Context mContext;
@@ -48,7 +48,7 @@ public class AlbumLabelMaker {
 	private final LazyLoadedBitmap mPicasaIcon;
 	private final LazyLoadedBitmap mCameraIcon;
 
-	public AlbumLabelMaker(Context context, AlbumSetSlotRenderer.LabelSpec spec) {
+	public AlbumLabelMaker(Context context, AlbumSetTypeSlotRenderer.LabelSpec spec) {
 		mContext = context;
 		mSpec = spec;
 		mTitlePaint = getTextPaint(spec.titleFontSize, spec.titleColor, false);
@@ -147,7 +147,7 @@ public class AlbumLabelMaker {
 
 		@Override
 		public Bitmap run(JobContext jc) {
-			AlbumSetSlotRenderer.LabelSpec s = mSpec;
+			AlbumSetTypeSlotRenderer.LabelSpec s = mSpec;
 
 			String title = mTitle;
 			String count = mCount;
