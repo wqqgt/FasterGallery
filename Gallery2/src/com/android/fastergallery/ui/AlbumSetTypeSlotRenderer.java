@@ -197,7 +197,7 @@ public class AlbumSetTypeSlotRenderer extends AbstractSlotRenderer {
 		if (content == null) {
 			content = mWaitLoadingTexture;
 		}
-		int b = AlbumLabelMaker.getBorderSize();
+		int b = AlbumTypeLabelMaker.getBorderSize();
 		int h = mLabelSpec.labelBackgroundHeight;
 		
 		switch(AlbumSetTypeManager.get().getCurrentType()) {
