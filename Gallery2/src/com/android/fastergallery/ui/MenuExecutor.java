@@ -193,9 +193,6 @@ public class MenuExecutor {
 		boolean supportInfo = (supported & MediaObject.SUPPORT_INFO) != 0;
 
 		setMenuItemVisible(menu, R.id.action_delete, supportDelete);
-		setMenuItemVisible(menu, R.id.action_hide, supportDelete);
-		setMenuItemVisible(menu, R.id.action_show_hide, supportDelete);
-		setMenuItemVisible(menu, R.id.action_rename, supportDelete);
 		setMenuItemVisible(menu, R.id.action_rotate_ccw, supportRotate);
 		setMenuItemVisible(menu, R.id.action_rotate_cw, supportRotate);
 		setMenuItemVisible(menu, R.id.action_crop, supportCrop);
