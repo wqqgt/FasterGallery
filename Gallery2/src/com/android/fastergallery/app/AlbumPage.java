@@ -558,7 +558,7 @@ public class AlbumPage extends ActivityState implements
 			actionBar.setTitle(GalleryUtils.getSelectionModePrompt(typeBits));
 		} else {
 			inflator.inflate(R.menu.album, menu);
-			actionBar.setTitle(mMediaSet.getName());
+			actionBar.setTitle(mMediaSet.getName()+"("+mMediaSet.getMediaItemCount()+")");
 
 			FilterUtils.setupMenuItems(actionBar, mMediaSetPath, true);
 

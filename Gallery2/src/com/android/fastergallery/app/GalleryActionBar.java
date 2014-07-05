@@ -270,23 +270,24 @@ public class GalleryActionBar implements OnNavigationListener {
 
 	public void enableAlbumModeMenu(int selected,
 			OnAlbumModeSelectedListener listener) {
-		if (mActionBar != null) {
-			if (mAlbumModeAdapter == null) {
-				// Initialize the album mode options if they haven't been
-				// already
-				Resources res = mActivity.getResources();
-				mAlbumModes = new CharSequence[] {
-						res.getString(R.string.switch_photo_filmstrip),
-						res.getString(R.string.switch_photo_grid) };
-				mAlbumModeAdapter = new AlbumModeAdapter();
-			}
-			mAlbumModeListener = null;
-			mLastAlbumModeSelected = selected;
-			mActionBar.setListNavigationCallbacks(mAlbumModeAdapter, this);
-			mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-			mActionBar.setSelectedNavigationItem(selected);
-			mAlbumModeListener = listener;
-		}
+//		if (mActionBar != null) {
+//			if (mAlbumModeAdapter == null) {
+//				// Initialize the album mode options if they haven't been
+//				// already
+//				Resources res = mActivity.getResources();
+//				mAlbumModes = new CharSequence[] {
+//						res.getString(R.string.switch_photo_filmstrip),
+//						res.getString(R.string.switch_photo_grid) };
+//				mAlbumModeAdapter = new AlbumModeAdapter();
+//			}
+//			mAlbumModeListener = null;
+//			mLastAlbumModeSelected = selected;
+//			mActionBar.setListNavigationCallbacks(mAlbumModeAdapter, this);
+//			mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+//			mActionBar.setSelectedNavigationItem(selected);
+//			mAlbumModeListener = listener;
+//		}
+	  mActionBar.setDisplayShowTitleEnabled(true);
 	}
 
 	public void disableAlbumModeMenu(boolean hideMenu) {
