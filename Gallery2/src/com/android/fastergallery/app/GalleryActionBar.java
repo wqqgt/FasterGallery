@@ -55,10 +55,10 @@ public class GalleryActionBar implements OnNavigationListener {
 	private int mCurrentIndex;
 	private ClusterAdapter mAdapter = new ClusterAdapter();
 
-	private AlbumModeAdapter mAlbumModeAdapter;
+//	private AlbumModeAdapter mAlbumModeAdapter;
 	private OnAlbumModeSelectedListener mAlbumModeListener;
 	private int mLastAlbumModeSelected;
-	private CharSequence[] mAlbumModes;
+//	private CharSequence[] mAlbumModes;
 	public static final int ALBUM_FILMSTRIP_MODE_SELECTED = 0;
 	public static final int ALBUM_GRID_MODE_SELECTED = 1;
 
@@ -140,46 +140,46 @@ public class GalleryActionBar implements OnNavigationListener {
 		}
 	}
 
-	private class AlbumModeAdapter extends BaseAdapter {
-		@Override
-		public int getCount() {
-			return mAlbumModes.length;
-		}
-
-		@Override
-		public Object getItem(int position) {
-			return mAlbumModes[position];
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			if (convertView == null) {
-				convertView = mInflater.inflate(
-						R.layout.action_bar_two_line_text, parent, false);
-			}
-			TwoLineListItem view = (TwoLineListItem) convertView;
-			view.getText1().setText(mActionBar.getTitle());
-			view.getText2().setText((CharSequence) getItem(position));
-			return convertView;
-		}
-
-		@Override
-		public View getDropDownView(int position, View convertView,
-				ViewGroup parent) {
-			if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.action_bar_text,
-						parent, false);
-			}
-			TextView view = (TextView) convertView;
-			view.setText((CharSequence) getItem(position));
-			return convertView;
-		}
-	}
+//	private class AlbumModeAdapter extends BaseAdapter {
+//		@Override
+//		public int getCount() {
+//			return mAlbumModes.length;
+//		}
+//
+//		@Override
+//		public Object getItem(int position) {
+//			return mAlbumModes[position];
+//		}
+//
+//		@Override
+//		public long getItemId(int position) {
+//			return position;
+//		}
+//
+//		@Override
+//		public View getView(int position, View convertView, ViewGroup parent) {
+//			if (convertView == null) {
+//				convertView = mInflater.inflate(
+//						R.layout.action_bar_two_line_text, parent, false);
+//			}
+//			TwoLineListItem view = (TwoLineListItem) convertView;
+//			view.getText1().setText(mActionBar.getTitle());
+//			view.getText2().setText((CharSequence) getItem(position));
+//			return convertView;
+//		}
+//
+//		@Override
+//		public View getDropDownView(int position, View convertView,
+//				ViewGroup parent) {
+//			if (convertView == null) {
+//				convertView = mInflater.inflate(R.layout.action_bar_text,
+//						parent, false);
+//			}
+//			TextView view = (TextView) convertView;
+//			view.setText((CharSequence) getItem(position));
+//			return convertView;
+//		}
+//	}
 
 	public static String getClusterByTypeString(Context context, int type) {
 		for (ActionItem item : sClusterItems) {

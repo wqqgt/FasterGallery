@@ -277,18 +277,18 @@ public class AlbumSetPage extends ActivityState implements
 			mActivity.getStateManager().startStateForResult(AlbumSetPage.class,
 					REQUEST_DO_ANIMATION, data);
 		} else {
-			if (!mGetContent && albumShouldOpenInFilmstrip(targetSet)) {
-				data.putParcelable(PhotoPage.KEY_OPEN_ANIMATION_RECT,
-						mSlotView.getSlotRect(slotIndex, mRootPane));
-				data.putInt(PhotoPage.KEY_INDEX_HINT, 0);
-				data.putString(PhotoPage.KEY_MEDIA_SET_PATH, mediaPath);
-				data.putBoolean(PhotoPage.KEY_START_IN_FILMSTRIP, true);
-				data.putBoolean(PhotoPage.KEY_IN_CAMERA_ROLL,
-						targetSet.isCameraRoll());
-				mActivity.getStateManager().startStateForResult(
-						FilmstripPage.class, AlbumPage.REQUEST_PHOTO, data);
-				return;
-			}
+//			if (!mGetContent && albumShouldOpenInFilmstrip(targetSet)) {
+//				data.putParcelable(PhotoPage.KEY_OPEN_ANIMATION_RECT,
+//						mSlotView.getSlotRect(slotIndex, mRootPane));
+//				data.putInt(PhotoPage.KEY_INDEX_HINT, 0);
+//				data.putString(PhotoPage.KEY_MEDIA_SET_PATH, mediaPath);
+//				data.putBoolean(PhotoPage.KEY_START_IN_FILMSTRIP, true);
+//				data.putBoolean(PhotoPage.KEY_IN_CAMERA_ROLL,
+//						targetSet.isCameraRoll());
+//				mActivity.getStateManager().startStateForResult(
+//						FilmstripPage.class, AlbumPage.REQUEST_PHOTO, data);
+//				return;
+//			}
 			data.putString(AlbumPage.KEY_MEDIA_PATH, mediaPath);
 
 			// We only show cluster menu in the first AlbumPage in stack
