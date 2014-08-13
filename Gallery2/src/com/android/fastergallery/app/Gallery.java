@@ -106,7 +106,7 @@ public final class Gallery extends AbstractGalleryActivity implements
 		PicasaSource.showSignInReminder(this);
 		Bundle data = new Bundle();
 		data.putString(AlbumSetPage.KEY_MEDIA_PATH, getDataManager()
-				.getTopSetPath(DataManager.INCLUDE_IMAGE));
+				.getTopSetPath(DataManager.INCLUDE_LOCAL_IMAGE_ONLY));
 		getStateManager().startState(AlbumSetPage.class, data);
 		mVersionCheckDialog = PicasaSource.getVersionCheckDialog(this);
 		if (mVersionCheckDialog != null) {
